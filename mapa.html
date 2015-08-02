@@ -54,7 +54,7 @@ var path = d3.geo.path()
 
 var zoom = d3.behavior.zoom()
     .scale(projection.scale() * 2 * Math.PI)
-    .scaleExtent([1 << 11, 1 << 20])
+    .scaleExtent([1 << 17, 1 << 20])
     .translate([width - center[0], height - center[1]])
     .on("zoom", zoomed);
 
