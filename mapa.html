@@ -121,7 +121,7 @@ function ready(error, gba,actuales) {
 		  .append("path")
 		  .attr("class", "departamento")
 		  .attr("d", path)
-		  // .on("click", clicked);
+		  .on("click", clicked);
 	svg.selectAll(".departamento")
     .style("fill", function(d) {
       return color(+d.properties.anos_en_el_cargo);
