@@ -12,12 +12,12 @@ body {
   pointer-events: all;
 }
 
-.feature {
-  fill: #ccc;
+.distrito {
   cursor: pointer;
 }
 
 .feature.active {
+
 }
 
 .place,
@@ -46,10 +46,14 @@ body {
   fill-opacity: .8;
 }
 
+.symbol {
+  fill: red;
+}
+
 .hidden { 
   display: none; 
 }
-div.tooltip {
+.tooltip {
   color: #222; 
   background: #fff; 
   padding: .5em; 
@@ -71,6 +75,7 @@ var width = Math.max(960, window.innerWidth),
     height = Math.max(500, window.innerHeight),
     active = d3.select(null);
 
+
 var color = d3.scale.quantize()
   .domain([2, 24])
   .range(["#d2d1fd", "#a5a3fb", "#7774f9", "#4a46f7", "#0000ff"]);
@@ -80,6 +85,10 @@ var colorText = d3.scale.quantize()
   .range(["#00202a", "#2e343b", "#e4f1fe", "#e4f1fe", "#e4f1fe"]);
 
   // Via http://colorsafe.co/
+
+var radio = d3.scale.linear()
+    .domain([2,24])
+    .range([1,20]);
 
 var projection = d3.geo.mercator()
      .scale(30000)
@@ -119,13 +128,13 @@ svg
 d3.json("gba.json", function(error, gba) {
   if (error) throw error;
 
-  console.table(gba)
+  console.table(gba.gba)
 
   g.selectAll("path")
       .data(topojson.feature(gba, gba.objects.poligonos_gba).features)
     .enter().append("path")
       .attr("d", path)
-      .attr("class", "feature")
+      .attr("class", "distrito")
       .on("click", clicked)
       .style("fill", function(d) {
         return color(+d.properties.anos_en_el_cargo);
@@ -147,6 +156,17 @@ d3.json("gba.json", function(error, gba) {
       .datum(topojson.mesh(gba, gba.objects.poligonos_gba, function(a, b) { return a !== b; }))
       .attr("class", "mesh")
       .attr("d", path);
+
+  g.selectAll(".node")
+    .data(topojson.feature(gba, gba.objects.gba).features)
+    .enter().append("circle")
+    .attr("class", "node")
+    .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+    .attr("r", 5);
+    // .data(topojson.feature(gba, gba.objects.poligonos_gba).features)
+    // .attr("r", function(d) {
+    //   return radio(d.properties.anos_en_el_cargo);
+    // });
 
   g.selectAll(".place-label")
       .data(topojson.feature(gba, gba.objects.poligonos_gba).features)

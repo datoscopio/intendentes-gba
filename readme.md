@@ -45,7 +45,7 @@ SELECT * FROM departamentos_buenos_aires WHERE departamento LIKE  '%MERLO%' OR d
 
 https://pixelbeat.cartodb.com/tables/poligonos_gba/map
 
-topojson -o gba.json --bbox -p cabecera,departamento,codigo,anos_en_el_cargo gba.geojson poligonos_gba.geojson
+topojson -o gba.json --bbox -p cabecera,departamento,codigo,intendente,anos_en_el_cargo gba.geojson poligonos_gba.geojson
 
 
 http://bl.ocks.org/mbostock/1129492
@@ -59,3 +59,5 @@ http://jsfiddle.net/cuckovic/FWKt5/
 http://bl.ocks.org/zross/6a31f4ef9e778d94c204
 
 http://bl.ocks.org/mpmckenna8/2fb0ffd4aa38990aff57
+
+http://techslides.com/d3-world-maps-tooltips-zooming-and-queue
