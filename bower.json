@@ -1,0 +1,9 @@
+{
+  "name": "quien-gba",
+  "version": "0.0.0",
+  "homepage": "https://github.com/datoscopio/intendentes-gba",
+  "authors": [
+    "Davo <davidgalavotti@gmail.com>"
+  ],
+  "license": "MIT"
+}
