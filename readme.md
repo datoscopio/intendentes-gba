@@ -61,3 +61,9 @@ http://bl.ocks.org/zross/6a31f4ef9e778d94c204
 http://bl.ocks.org/mpmckenna8/2fb0ffd4aa38990aff57
 
 http://techslides.com/d3-world-maps-tooltips-zooming-and-queue
+
+http://eyeseast.github.io/visible-data/2013/08/27/responsive-legends-with-d3/
+
+http://bl.ocks.org/jczaplew/4444770
+
+http://eyeseast.github.io/visible-data/2013/08/26/responsive-d3/

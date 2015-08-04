@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
@@ -18,6 +17,18 @@ body {
 
 .feature.active {
 
+}
+
+.key path {
+  display: none;
+}
+
+.key line {
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.key {
+  fill-opacity: .8;
 }
 
 .place,
@@ -68,6 +79,7 @@ body {
 </style>
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
 <script>
 
@@ -85,6 +97,16 @@ var colorText = d3.scale.quantize()
   .range(["#00202a", "#2e343b", "#e4f1fe", "#e4f1fe", "#e4f1fe"]);
 
   // Via http://colorsafe.co/
+
+var x = d3.scale.linear()
+    .domain([0, 27])
+    .range([0, 240]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom")
+    .tickSize(13)
+    .tickValues(color.domain());
 
 var radio = d3.scale.linear()
     .domain([2,24])
@@ -105,7 +127,8 @@ var path = d3.geo.path()
     .projection(projection);
 
 var tooltip = d3.select("body").append("div")
-    .attr("class", "tooltip");
+    .attr("class", "tooltip")
+    .style("display", "none");
 
 
 var svg = d3.select("body").append("svg")
@@ -125,10 +148,13 @@ svg
     .call(zoom) // delete this line to disable free zooming
     .call(zoom.event);
 
-d3.json("gba.json", function(error, gba) {
-  if (error) throw error;
+queue()
+    .defer(d3.json, "gba.json")
+    .await(ready);
 
-  console.table(gba.gba)
+
+function ready(error, gba) {
+  if (error) throw error;
 
   g.selectAll("path")
       .data(topojson.feature(gba, gba.objects.poligonos_gba).features)
@@ -157,6 +183,11 @@ d3.json("gba.json", function(error, gba) {
       .attr("class", "mesh")
       .attr("d", path);
 
+
+  /* 
+
+  // WIP Inyectar nodos circulares para transicion a Force Layout
+
   g.selectAll(".node")
     .data(topojson.feature(gba, gba.objects.gba).features)
     .enter().append("circle")
@@ -167,7 +198,8 @@ d3.json("gba.json", function(error, gba) {
     // .attr("r", function(d) {
     //   return radio(d.properties.anos_en_el_cargo);
     // });
-
+  
+  */ 
   g.selectAll(".place-label")
       .data(topojson.feature(gba, gba.objects.poligonos_gba).features)
     .enter().append("text")
@@ -177,7 +209,30 @@ d3.json("gba.json", function(error, gba) {
       .style("fill", function(d) {
         return colorText(+d.properties.anos_en_el_cargo);
     })
-});
+
+  var key = svg.append("g");
+    key.attr("class", "key")
+        .attr("transform", "translate(80, 80)");
+      
+    key.selectAll("rect")
+        .data(color.range().map(function(d, i) {
+          return {
+            x0: i ? x(color.domain()[i - 1]) : x.range()[0],
+            x1: i < color.domain().length ? x(color.domain()[i]) : x.range()[1],
+            z: d
+          };
+        }))
+      .enter().append("rect")
+        .attr("height", 8)
+        .attr("x", function(d) { return d.x0; })
+        .attr("width", function(d) { return d.x1 - d.x0; })
+        .style("fill", function(d) { return d.z; });
+
+    key.call(xAxis).append("text")
+        .attr("class", "caption")
+        .attr("y", -6)
+        .text("Intendentes de GBA, cantidad de años en el cargo");  
+};
 
 function clicked(d) {
   if (active.node() === this) return reset();

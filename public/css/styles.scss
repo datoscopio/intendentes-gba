@@ -1,0 +1,368 @@
+@import "../components/bourbon/app/assets/stylesheets/_bourbon.scss";
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/mixins";
+@import "mixins/opacity.scss";
+@import "mixins/breakpoint.scss";
+
+// @import "animate.min.css";
+
+@import url(http://fonts.googleapis.com/css?family=Roboto+Mono:400,300,100,500,700);
+// @include font-face('Brandon Text Medium', '../assets/fonts/roboto_text_medium', $file-formats: eot svg woff ttf);
+// @include font-face('Brandon Text Light', '../assets/fonts/roboto_text_light', $file-formats: eot svg woff ttf);
+
+/* ########
+   Fuentes
+   ######## */
+
+$fontset-roboto-medium: "Roboto Mono", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$fontset-roboto-light: "Roboto Mono", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$font-family-sans-serif: $fontset-roboto-medium;
+
+/* ########
+   Colores
+   ######## */
+
+
+
+/* ################
+   Bootstrap Resets
+   ################ */
+
+$navbar-default-bg:           transparent;
+$navbar-default-border:       none;
+$tooltip-max-width:           520px !default;
+
+// Import custom bootstrap components
+
+// Core variables and mixins
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/variables";
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/mixins";
+
+// Reset and dependencies
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/normalize";
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/glyphicons";
+
+// Core CSS
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/scaffolding";
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/type";
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/code";
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/grid";
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/forms";
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/buttons";
+
+// Components
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/component-animations";
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/dropdowns";
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/button-groups";
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/input-groups";
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/navs";
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/navbar";
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/badges";
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/responsive-embed";
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/close";
+
+// Components w/ JavaScript
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/tooltip";
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/popovers";
+
+// Utility classes
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/utilities";
+@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/responsive-utilities";
+
+html {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body{ height:100%; }
+
+body, html {
+  margin: 0;
+  -webkit-transition: opacity 400ms;
+  -moz-transition: opacity 400ms;
+  transition: opacity 400ms;
+}
+
+body {
+  line-height: 1.42857;
+  background-color: transparent !important;
+  color: #fff;
+  // @include breakpoint(xs) {
+  //   border-top: 5px solid #F17E2A;
+  // }
+  // @include breakpoint(sm) {
+  //   border-top: 5px solid #CC4A59;
+  // }
+  // @include breakpoint(md) {
+  //   border-top: 5px solid #772626;
+  // }
+  // @include breakpoint(lg) {
+  //   border-top: 5px solid #30013F;
+  // }
+  // @media (max-height:700px) {
+  //   border-top: 5px solid red;
+  // }
+
+}
+
+#home {
+  background: url();
+  background-color: #222;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  padding: 0;
+}
+
+.logo {
+  position: absolute;
+  left: 25px;
+  top: 50px;
+  margin: 0;
+  padding: 0;
+  text-indent: -9999px;
+  width: 113px;
+  height: 26px;
+  background: url(../assets/images/brand.svg);
+  background-size: 113px 26px;
+  @include transition(all 0.4s ease-in-out);
+  @include breakpoint(xs) {
+    top: 25px;
+  }
+  @include breakpoint(md) {
+    width: 113px;
+    height: 26px;
+    background-size: 113px 26px
+  }
+  @include breakpoint(lg) {
+    width: 147px;
+    height: 34px;
+    background-size: 147px 34px;
+  }
+}
+
+
+.intro {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  text-align: left;
+  @include transform(translate(0%, -50%));
+  padding: 0 50px 0 25px;
+  text-shadow: 0px 2px 1px rgba(0, 0, 0, 0.5);
+}
+
+
+.headline {
+  font-family: $fontset-roboto-light;
+  font-size: 1.2em;
+  font-style: normal;
+  text-transform: none;
+  margin: 0 45% 0 0;
+  text-shadow: 0px 2px 1px rgba(0, 0, 0, 0.5);
+  @include transition(all 0.4s ease-in-out);
+  @include breakpoint(xs) {
+     margin: 0 15% 0 0;
+  }
+}
+
+
+.header {
+  position: relative;
+  width: 100%;
+  z-index: 998;
+}
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+
+.section {
+  display: table;
+  width: 100%;
+  height: 100%;
+  /* For at least Firefox */
+  min-height: 100%;
+}
+
+.section-inner {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+
+.section-image {
+
+}
+
+.section-header {
+  text-align: center;
+  margin: 0 0 60px;
+  h2 {
+    font-size: 2em;
+  }
+}
+
+.section-header-left {
+  text-align: left;
+  .section-line {
+    width: inherit;
+    margin: 30px 0;
+  }
+}
+
+.section-title {
+}
+
+.section-subtitle {
+}
+
+h1 {
+  font-family: $fontset-roboto-light;
+  font-size: 2em;
+  font-weight: normal;
+  letter-spacing: 1px;
+  line-height: 1em;
+  padding-bottom: 35px;
+  @include breakpoint(xs) {
+    font-size: 1.9em;
+    letter-spacing: -1px;
+    padding-bottom: 10px;
+  }
+  @include breakpoint(sm) {
+    font-size: 1.5em;
+  }
+  @include breakpoint(md) {
+    font-size: 2em;
+  }
+  @include breakpoint(lg) {
+    font-size: 3em;
+  }
+}
+
+h2 {
+  font-family: $fontset-roboto-light;
+  font-size: 4.25em;
+  font-weight: 100;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+
+  // @include breakpoint(xs) {
+  //   width: 70%;
+  //   font-size: 1.8em;
+  // }
+  // @include breakpoint(sm) {
+  //   width: 60%;
+  //   font-size: 2em;
+  // }
+  // @include breakpoint(md) {
+  //   width: 50%;
+  //   font-size: 3em;
+  // }
+  // @include breakpoint(lg) {
+  //   width: 80%;
+  //   font-size: 3.5em;
+  // }
+}
+
+/*
+ * Globals
+ */
+
+/* Links */
+
+a {
+  color: #fff;
+  &:focus, &:hover {
+    color: #fff;
+  }
+}
+
+/* Custom default button */
+
+.btn-default {
+  color: #333;
+  text-shadow: none;
+  /* Prevent inheritence from `body` */
+  background-color: #fff;
+  border: 1px solid #fff;
+  &:hover, &:focus {
+    color: #333;
+    text-shadow: none;
+    /* Prevent inheritence from `body` */
+    background-color: #fff;
+    border: 1px solid #fff;
+  }
+}
+
+.background {
+  fill: none;
+  pointer-events: all;
+}
+
+.distrito {
+  cursor: pointer;
+}
+
+.feature.active {
+
+}
+
+.key path {
+  display: none;
+}
+
+.key line {
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.key {
+  fill-opacity: .8;
+}
+
+.place,
+.place-label {
+  text-anchor: middle;
+  font-size: 12px;
+  letter-spacing: -4;
+}
+
+.mesh {
+  fill: none;
+  stroke: #fff;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.key path {
+  display: none;
+}
+
+.key line {
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.key {
+  fill-opacity: .8;
+}
+
+.symbol {
+  fill: red;
+}
+
+.hidden { 
+  display: none; 
+}
+.tooltip {
+  color: #222; 
+  background: #fff; 
+  padding: .5em; 
+  text-shadow: #f5f5f5 0 1px 0;
+  border-radius: 2px; 
+  box-shadow: 0px 0px 2px 0px #a6a6a6; 
+  opacity: 0.9; 
+  position: absolute;
+}
