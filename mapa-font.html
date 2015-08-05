@@ -31,7 +31,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
-<script src="js/d3-legend.min.js"></script>
 
 </head>
 
@@ -42,10 +41,10 @@
 <div id="menu">
   <div class="btn-group" role="group" aria-label="Opciones" data-toggle="buttons">
     <label class="btn btn-default active">
-        <input type="radio" name="options" id="anos_en_el_cargo" autocomplete="off" checked>Años en el cargo
+        <input type="radio" name="options" id="votos_2011" autocomplete="off" checked>Votos 2011
     </label>
     <label class="btn btn-default">
-        <input type="radio" name="options" id="votos_2011" autocomplete="off" checked>Votos 2011
+        <input type="radio" name="options" id="anos_en_el_cargo" autocomplete="off" checked>Años en el cargo
     </label>
   </div>
 </div>
@@ -60,10 +59,6 @@ var width = Math.max(960, window.innerWidth),
     active = d3.select(null),
     data;
 
-
-var linear = d3.scale.linear()
-  .domain([2,5,10,15,24])
-  .range(["#d2d1fd", "#a5a3fb", "#7774f9", "#4a46f7", "#0000ff"]);
 
 var color = d3.scale.quantize()
   // .domain([2,24])
@@ -126,7 +121,7 @@ function ready(error, gba) {
 
   data = topojson.feature(gba, gba.objects.poligonos_gba).features;
 
-  var referencia = "anos_en_el_cargo";
+  var referencia = "votos_2011";
 
   colorText.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
   color.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
@@ -147,10 +142,9 @@ function ready(error, gba) {
         .classed("hidden", false)
         .attr("style", "left:"+(mouse[0]+25)+"px;top:"+mouse[1]+"px")
         .html(
-          "Distrito: <strong>"+d.properties.departamento+"</strong><br>"+
           "Intendente: " +d.properties.intendente+"<br>"+
           "Años en el cargo: " +d.properties.anos_en_el_cargo+"<br>"+
-          "Cantidad de votos 2011: " +formatearMiles(d.properties.votos_2011)+ " votos");
+          "Cantidad de votos 2011: " +formatearMiles(d.properties[referencia]));
     })
     .on("mouseout",  function(d,i) {
       tooltip.classed("hidden", true)
@@ -187,54 +181,13 @@ function ready(error, gba) {
     .enter().append("text")
       .attr("class", "place-label")
       .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
-      .attr("dy", "-.20em")
       .text(function(d) { return d.properties.departamento; })
-      .call(wrap, 75)
-      .style("opacity", function(d) {
-            if (this.getComputedTextLength() > 60 && path.area(d) < 9000 ) {
-              return 0;
-            } else {
-              return 1;
-            }
-      })
-        // if (this.getComputedTextLength() === 85.81396484375 && path.area(d) === 1124.8116102908389) {
-        //     console.log(path.area(d));
-        //     return 4;
-            
-        // }
-        //   var textSize = Math.round(this.getComputedTextLength());
-        //   // console.log(this.getComputedTextLength())
-        // if (textSize <= 50 ) {
-        //   return Math.min(path.area(d), (path.area(d)) / this.getComputedTextLength() * .05);
-        // } else if (textSize >= 75) {
-        //   return Math.min(path.area(d), (path.area(d)) / this.getComputedTextLength() * .05);
-        // } else if (textSize >= 100) {
-        //   return 7;
-        // } else if (textSize >= 150) {
-        //   return 6;
-        // } else {
-        //   return 5;
-        // }
-
-        // return Math.min(path.area(d) * /.5, (path.area(d)*.5) / this.getComputedTextLength() * .05); 
-      
       .style("fill", function(d) {
         return colorText(d.properties[referencia]);
-      });
+      })
+      .each(getSize)
+      .style("font-size", function(d) { return d.scale + "px"; });
 
-
-  svg.append("g")
-    .attr("class", "legendLinear")
-    .attr("transform", "translate(20,20)");
-
-  var legendLinear = d3.legend.color()
-    .shapeWidth(30)
-    .cells([2, 4, 10, 15, 24])
-    .orient('horizontal')
-    .scale(linear);
-
-  svg.select(".legendLinear")
-    .call(legendLinear);
 
 
   $('[data-toggle="buttons"] .btn').click(function(){
@@ -265,8 +218,6 @@ function ready(error, gba) {
   });
 };
 
-
-
 function clicked(d) {
   if (active.node() === this) return reset();
   active.classed("active", false);
@@ -294,21 +245,18 @@ function reset() {
       .call(zoom.translate([0, 0]).scale(1).event)
 }
 
-function zoomed() {
-  g.style("stroke-width", 1.5 / d3.event.scale + "px");
-  g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-  g.selectAll(".place-label")
-   .style("font-size",getSize/d3.event.scale);
-   // Revisar como volver a incorporar una tipografia acorde de tamaño.
-   // .style("opacity", "0");
-  //   .style("font-size", function(d) { return Math.min(path.area(d)*.005, (path.area(d)) / this.getComputedTextLength() * .05)/d3.event.scale })
-}
-
 function getSize(d) {
   var bbox = this.getBBox(),
       cbbox = this.parentNode.getBBox(),
       scale = Math.min(cbbox.width/bbox.width, cbbox.height/bbox.height);
   d.scale = scale;
+}
+
+function zoomed() {
+  g.style("stroke-width", 1.5 / d3.event.scale + "px");
+  g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+  g.selectAll(".place-label")
+    .style("font-size",getSiz/d3.event.scale);
 }
 
 // If the drag behavior prevents the default click,
@@ -326,7 +274,7 @@ function wrap(text, width) {
         word,
         line = [],
         lineNumber = 0,
-        lineHeight = 1, // ems
+        lineHeight = 1.1, // ems
         y = text.attr("y"),
         dy = parseFloat(text.attr("dy")),
         tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");

@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto+Mono:400,300,100,500,700);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Mono:100,300,400,500,700);
 /* ########
    Fuentes
    ######## */
@@ -4522,16 +4522,16 @@ button.close {
 html {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: transparent; }
-
-html, body {
-  height: 100%; }
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
 
 body, html {
   margin: 0;
   -webkit-transition: opacity 400ms;
   -moz-transition: opacity 400ms;
-  transition: opacity 400ms; }
+  transition: opacity 400ms;
+  height: 100%; }
 
 body {
   line-height: 1.42857;
@@ -4674,40 +4674,30 @@ a {
     color: #fff; }
 
 /* Custom default button */
-.btn-default {
-  color: #333;
-  text-shadow: none;
-  /* Prevent inheritence from `body` */
-  background-color: #fff;
-  border: 1px solid #fff; }
-  .btn-default:hover, .btn-default:focus {
-    color: #333;
-    text-shadow: none;
-    /* Prevent inheritence from `body` */
-    background-color: #fff;
-    border: 1px solid #fff; }
-
 .background {
   fill: none;
   pointer-events: all; }
 
+#menu {
+  display: block;
+  position: absolute;
+  right: 10%;
+  top: 25px; }
+
+#gba {
+  z-index: 10; }
+
 .distrito {
   cursor: pointer; }
 
-.key path {
-  display: none; }
-
-.key line {
-  stroke: #000;
-  shape-rendering: crispEdges; }
-
-.key {
-  fill-opacity: .8; }
+.distrito .active {
+  font-weight: 500; }
 
 .place,
 .place-label {
+  pointer-events: none;
   text-anchor: middle;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: -4; }
 
 .mesh {

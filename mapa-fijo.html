@@ -31,8 +31,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
-<script src="js/d3-legend.min.js"></script>
-
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet'/>
 </head>
 
 <body>
@@ -42,16 +42,26 @@
 <div id="menu">
   <div class="btn-group" role="group" aria-label="Opciones" data-toggle="buttons">
     <label class="btn btn-default active">
-        <input type="radio" name="options" id="anos_en_el_cargo" autocomplete="off" checked>Años en el cargo
+        <input type="radio" name="options" id="votos_2011" autocomplete="off" checked>Votos 2011
     </label>
     <label class="btn btn-default">
-        <input type="radio" name="options" id="votos_2011" autocomplete="off" checked>Votos 2011
+        <input type="radio" name="options" id="anos_en_el_cargo" autocomplete="off" checked>Años en el cargo
     </label>
   </div>
 </div>
 <div id="gba"></div>
+<div id="map"></div>
 <script>
 
+
+L.mapbox.accessToken = 'pk.eyJ1IjoiYnJpY2VkZXYiLCJhIjoiRkZFQU9SVSJ9.YsRJ0JOGMybM6Zzh-wU9Wg';
+var map = L.mapbox.map('map', 'mapbox.light',{ zoomControl: false }).setView([48.7, 2.5], 9);
+
+map.dragging.disable();
+map.touchZoom.disable();
+map.doubleClickZoom.disable();
+map.scrollWheelZoom.disable();
+if (map.tap) map.tap.disable();
 
 
 
@@ -60,10 +70,6 @@ var width = Math.max(960, window.innerWidth),
     active = d3.select(null),
     data;
 
-
-var linear = d3.scale.linear()
-  .domain([2,5,10,15,24])
-  .range(["#d2d1fd", "#a5a3fb", "#7774f9", "#4a46f7", "#0000ff"]);
 
 var color = d3.scale.quantize()
   // .domain([2,24])
@@ -99,10 +105,12 @@ var tooltip = d3.select("body").append("div")
     .style("display", "none");
 
 
-var svg = d3.select("#gba").append("svg")
-    .attr("width", width)
+var svg = d3.select(map.getPanes().overlayPane)
+    .append("svg").attr("id","gba").attr("width", width)
     .attr("height", height)
     .on("click", stopped, true);
+
+var g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
 svg.append("rect")
     .attr("class", "background")
@@ -126,7 +134,7 @@ function ready(error, gba) {
 
   data = topojson.feature(gba, gba.objects.poligonos_gba).features;
 
-  var referencia = "anos_en_el_cargo";
+  var referencia = "votos_2011";
 
   colorText.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
   color.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
@@ -147,10 +155,9 @@ function ready(error, gba) {
         .classed("hidden", false)
         .attr("style", "left:"+(mouse[0]+25)+"px;top:"+mouse[1]+"px")
         .html(
-          "Distrito: <strong>"+d.properties.departamento+"</strong><br>"+
           "Intendente: " +d.properties.intendente+"<br>"+
           "Años en el cargo: " +d.properties.anos_en_el_cargo+"<br>"+
-          "Cantidad de votos 2011: " +formatearMiles(d.properties.votos_2011)+ " votos");
+          "Cantidad de votos 2011: " +formatearMiles(d.properties[referencia]));
     })
     .on("mouseout",  function(d,i) {
       tooltip.classed("hidden", true)
@@ -179,93 +186,41 @@ function ready(error, gba) {
     // });
   
   */ 
-
-
-
   g.selectAll(".place-label")
-      .data(data)
+      .data(topojson.feature(gba, gba.objects.poligonos_gba).features)
     .enter().append("text")
       .attr("class", "place-label")
       .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
-      .attr("dy", "-.20em")
-      .text(function(d) { return d.properties.departamento; })
-      .call(wrap, 75)
-      .style("opacity", function(d) {
-            if (this.getComputedTextLength() > 60 && path.area(d) < 9000 ) {
-              return 0;
-            } else {
-              return 1;
-            }
-      })
-        // if (this.getComputedTextLength() === 85.81396484375 && path.area(d) === 1124.8116102908389) {
-        //     console.log(path.area(d));
-        //     return 4;
-            
-        // }
-        //   var textSize = Math.round(this.getComputedTextLength());
-        //   // console.log(this.getComputedTextLength())
-        // if (textSize <= 50 ) {
-        //   return Math.min(path.area(d), (path.area(d)) / this.getComputedTextLength() * .05);
-        // } else if (textSize >= 75) {
-        //   return Math.min(path.area(d), (path.area(d)) / this.getComputedTextLength() * .05);
-        // } else if (textSize >= 100) {
-        //   return 7;
-        // } else if (textSize >= 150) {
-        //   return 6;
-        // } else {
-        //   return 5;
-        // }
-
-        // return Math.min(path.area(d) * /.5, (path.area(d)*.5) / this.getComputedTextLength() * .05); 
-      
+      .text(function(d) { return d.properties.anos_en_el_cargo; })
       .style("fill", function(d) {
         return colorText(d.properties[referencia]);
-      });
+    })
 
 
-  svg.append("g")
-    .attr("class", "legendLinear")
-    .attr("transform", "translate(20,20)");
 
-  var legendLinear = d3.legend.color()
-    .shapeWidth(30)
-    .cells([2, 4, 10, 15, 24])
-    .orient('horizontal')
-    .scale(linear);
+    $('[data-toggle="buttons"] .btn').click(function(){
+        referencia = $(this).find('input').attr('id');
 
-  svg.select(".legendLinear")
-    .call(legendLinear);
+        colorText.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
+        color.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
 
+        d3.selectAll(".distrito")
+            .transition()
+            .duration(1500)
+            .delay(function(d, i) { return i / data.length * 500; })
+            .style("fill", function (d) {
+              return color(d.properties[referencia]);
+            });
 
-  $('[data-toggle="buttons"] .btn').click(function(){
-
-      referencia = $(this).find('input').attr('id');
-
-      reset();
-
-
-      colorText.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
-      color.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
-
-      d3.selectAll(".distrito")
+        d3.selectAll(".place-label")
           .transition()
-          .duration(1500)
-          .delay(function(d, i) { return i / data.length * 500; })
-          .style("fill", function (d) {
-            return color(d.properties[referencia]);
+          .duration(1600)
+          .style("fill", function(d) {
+            return colorText(d.properties[referencia]);
           });
-
-      d3.selectAll(".place-label")
-        .transition()
-        .duration(1600)
-        .style("fill", function(d) {
-          return colorText(d.properties[referencia]);
-        });
-      
-  });
+        
+    });
 };
-
-
 
 function clicked(d) {
   if (active.node() === this) return reset();
@@ -298,17 +253,8 @@ function zoomed() {
   g.style("stroke-width", 1.5 / d3.event.scale + "px");
   g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
   g.selectAll(".place-label")
-   .style("font-size",getSize/d3.event.scale);
-   // Revisar como volver a incorporar una tipografia acorde de tamaño.
-   // .style("opacity", "0");
-  //   .style("font-size", function(d) { return Math.min(path.area(d)*.005, (path.area(d)) / this.getComputedTextLength() * .05)/d3.event.scale })
-}
-
-function getSize(d) {
-  var bbox = this.getBBox(),
-      cbbox = this.parentNode.getBBox(),
-      scale = Math.min(cbbox.width/bbox.width, cbbox.height/bbox.height);
-  d.scale = scale;
+    .style("font-size",12/d3.event.scale);
+        // .style("fill-opacity",0);
 }
 
 // If the drag behavior prevents the default click,
@@ -326,7 +272,7 @@ function wrap(text, width) {
         word,
         line = [],
         lineNumber = 0,
-        lineHeight = 1, // ems
+        lineHeight = 1.1, // ems
         y = text.attr("y"),
         dy = parseFloat(text.attr("dy")),
         tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");

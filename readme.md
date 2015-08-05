@@ -45,7 +45,7 @@ SELECT * FROM departamentos_buenos_aires WHERE departamento LIKE  '%MERLO%' OR d
 
 https://pixelbeat.cartodb.com/tables/poligonos_gba/map
 
-topojson -o gba.json --bbox -p cabecera,departamento,codigo,intendente,anos_en_el_cargo gba.geojson poligonos_gba.geojson
+topojson -o public/data/gba.json --bbox -p cabecera,departamento,codigo,intendente,anos_en_el_cargo,votos_2011 gba.geojson poligonos_gba.geojson
 
 
 http://bl.ocks.org/mbostock/1129492
@@ -67,3 +67,25 @@ http://eyeseast.github.io/visible-data/2013/08/27/responsive-legends-with-d3/
 http://bl.ocks.org/jczaplew/4444770
 
 http://eyeseast.github.io/visible-data/2013/08/26/responsive-d3/
+
+http://bl.ocks.org/herrstucki/5710596
+
+http://bl.ocks.org/herrstucki/5694697
+
+http://bl.ocks.org/timelyportfolio/7774986
+
+http://bl.ocks.org/dougdowson/10734337
+
+http://bl.ocks.org/dougdowson/9755247
+
+http://bl.ocks.org/rveciana/f46df2272b289a9ce4e7
+
+http://bl.ocks.org/dougdowson/11214484
+
+http://bl.ocks.org/dougdowson/c169c74342fa705305c4
+
+http://bl.ocks.org/dougdowson/8dd258e91d44c9ed637d
+
+http://bl.ocks.org/bricedev/8aa78379efd19ca584c9
+
+http://bl.ocks.org/bricedev/a0c5ef180272fac3aea6

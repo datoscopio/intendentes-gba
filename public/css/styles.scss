@@ -5,7 +5,7 @@
 
 // @import "animate.min.css";
 
-@import url(http://fonts.googleapis.com/css?family=Roboto+Mono:400,300,100,500,700);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Mono:100,300,400,500,700);
 // @include font-face('Brandon Text Medium', '../assets/fonts/roboto_text_medium', $file-formats: eot svg woff ttf);
 // @include font-face('Brandon Text Light', '../assets/fonts/roboto_text_light', $file-formats: eot svg woff ttf);
 
@@ -72,15 +72,16 @@ html {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-
-html, body{ height:100%; }
 
 body, html {
   margin: 0;
   -webkit-transition: opacity 400ms;
   -moz-transition: opacity 400ms;
   transition: opacity 400ms;
+  height:100%; 
 }
 
 body {
@@ -283,50 +284,54 @@ a {
 
 /* Custom default button */
 
-.btn-default {
-  color: #333;
-  text-shadow: none;
-  /* Prevent inheritence from `body` */
-  background-color: #fff;
-  border: 1px solid #fff;
-  &:hover, &:focus {
-    color: #333;
-    text-shadow: none;
-    /* Prevent inheritence from `body` */
-    background-color: #fff;
-    border: 1px solid #fff;
-  }
-}
+// .btn-default {
+//   // color: #333;
+//   text-shadow: none;
+//   /* Prevent inheritence from `body` */
+//   background-color: #fff;
+//   border: 1px solid #fff;
+//   &:hover, &:focus {
+//     color: #333;
+//     text-shadow: none;
+//     /* Prevent inheritence from `body` */
+//     background-color: #fff;
+//     border: 1px solid #fff;
+//   }
+// }
 
 .background {
   fill: none;
   pointer-events: all;
 }
 
+#menu {
+  display: block;
+  position: absolute;
+  right: 10%;
+  top: 25px;
+}
+
+#gba {
+  z-index: 10;
+}
+
+
 .distrito {
   cursor: pointer;
 }
 
-.feature.active {
-
+.distrito {
+  .active {
+    font-weight: 500; 
+  }
 }
 
-.key path {
-  display: none;
-}
-
-.key line {
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-.key {
-  fill-opacity: .8;
-}
 
 .place,
 .place-label {
+  pointer-events: none;
   text-anchor: middle;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: -4;
 }
 
