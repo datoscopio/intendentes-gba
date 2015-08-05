@@ -4684,9 +4684,6 @@ a {
   right: 10%;
   top: 25px; }
 
-#gba {
-  z-index: 10; }
-
 .distrito {
   cursor: pointer; }
 
@@ -4700,7 +4697,7 @@ a {
   font-size: 13px;
   letter-spacing: -4; }
 
-.mesh {
+.bordes {
   fill: none;
   stroke: #fff;
   stroke-linecap: round;
