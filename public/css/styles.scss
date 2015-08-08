@@ -124,20 +124,24 @@ header {
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
+  border-bottom: 1px solid rgba(0,0,0,.1); 
   h1 {
     font-size: 1.2em;
-    font-weight: 700;
+    font-weight: 400;
     letter-spacing: -0.01em;
     text-transform: uppercase;
     padding: 0;
-    margin: 50px 0 0 50px;
+    margin: 10px 0 10px 50px;
+    float: left;
   }
   h2 {
+    float: right;
     font-size: 1.2em;
     font-weight: 300;
     word-spacing: -0.15em;
     padding: 0;
-    margin: 10px 0 0 50px;
+    margin: 10px 10px 0 50px;
   }
 }
 
@@ -296,8 +300,8 @@ a {
 #menu {
   display: block;
   position: absolute;
-  right: 10%;
-  top: 25px;
+  left: 50px;
+  bottom: 150px;
 }
 
 .ficha {
@@ -442,9 +446,9 @@ a {
   left: 0;
   z-index: 100;
   visibility: hidden;
-  width: 300px;
+  width: 350px;
   height: 100%;
-  background: #0000ff;
+  background: #3C50FC;
   padding: 0 10px 15px 15px;
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
@@ -546,8 +550,8 @@ a {
 
 .ficha {
   &.st-menu-open .st-pusher {
-    -webkit-transform: translate3d(300px, 0, 0);
-    transform: translate3d(300px, 0, 0);
+    -webkit-transform: translate3d(350px, 0, 0);
+    transform: translate3d(350px, 0, 0);
   }
   &.st-menu {
     -webkit-transform: translate3d(-100%, 0, 0);

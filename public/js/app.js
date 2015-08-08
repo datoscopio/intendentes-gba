@@ -40,7 +40,7 @@
       .projection(projection);
 
   var tooltip = d3.select(".tooltip")
-      .style("classed", "hidden");
+      .style("display", "none");
 
   var ficha = d3.select(".ficha");
 
@@ -240,14 +240,13 @@
 
     ficha
       .data(data)
-      // .classed("hidden", false)
       .html(
-        "<h1>Intendente: " +d.properties.intendente+"</h1><br>"+
-        "Distrito: <strong>"+d.properties.distrito+"</strong><br>"+
-        "Frente: <strong>"+d.properties.frente_2011+"</strong><br>"+
-        "Cantidad de años en el cargo: " +d.properties.tiempocargo+"<br>"+
-        "Cantidad de mandatos: " +d.properties.mandatos+"<br>"+
-        "Particularidades: " +d.properties.particularidades);
+        "<h1><strong>Intendente</strong><br>" +d.properties.intendente+"</h1>"+
+        "<strong>Distrito</strong><br>"+d.properties.distrito+"<br>"+
+        "<strong>Frente</strong><br>"+d.properties.frente_2011+"<br>"+
+        "Cantidad de años en el cargo</strong><br>" +d.properties.tiempocargo+"<br>"+
+        "<strong>Cantidad de mandatos</strong><br>" +d.properties.mandatos+"<br>"+
+        "<strong>Particularidades</strong><br>" +d.properties.particularidades);
 
     svg.transition()
         .duration(1500)
