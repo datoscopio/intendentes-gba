@@ -236,10 +236,11 @@
         "<h1><strong>Intendente</strong><br>" +d.properties.intendente+"</h1>"+
         "<strong>Distrito</strong><br>"+d.properties.distrito+"<br>"+
         "<strong>Frente - Alianza</strong><br>"+d.properties.frentealianza_2015+"<br>"+
-        "<strong>Cuantos años llevan en el cargo</strong><br>" +d.properties.tiempo+"<br>"+
+        "<strong>Años en el cargo</strong><br>" +d.properties.tiempo+"<br>"+
         "<strong>Mandatos</strong><br>" +d.properties.mandatos+"<br>"+
         "<strong>Sucedió a</strong><br>" +d.properties.antes+"<br>"+
-        "<strong>Desempeño electoral 2011</strong><br>" +d.properties.pt2011+"<br>"+
+        "<strong>Cargo por el que compite en 2015</strong><br>" +d.properties.cargo+"<br>"+
+        "<strong>Desempeño electoral 2011</strong><br>" +d.properties.pt2011+"%<br>"+
         "<strong>Frente 2011</strong><br>" +d.properties.frente_2011);
         /*
         Intendente
@@ -289,7 +290,6 @@
 
 
   function wrap(text, width) {
-    console.log(text)
     text.each(function() {
       var text = d3.select(this),
           words = text.text().split(/\s+/).reverse(),
@@ -323,9 +323,6 @@
    * Copyright 2013, Codrops
    * http://www.codrops.com
    */
-
-
-    console.log('Loading SidebarMenuEffects...');
 
     function hasParentClass( e, classname ) {
       if(e === document) return false;

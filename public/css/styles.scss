@@ -6,8 +6,7 @@
 // @import "animate.min.css";
 
 @import url(http://fonts.googleapis.com/css?family=Roboto+Mono:100,300,400,500,700);
-// @include font-face('Brandon Text Medium', '../assets/fonts/roboto_text_medium', $file-formats: eot svg woff ttf);
-// @include font-face('Brandon Text Light', '../assets/fonts/roboto_text_light', $file-formats: eot svg woff ttf);
+@include font-face('Datoscopio', '../fonts/datoscopio', $file-formats: eot svg woff ttf);
 
 /* ########
    Fuentes
@@ -68,6 +67,41 @@ $tooltip-max-width:           520px !default;
 @import "../components/bootstrap-sass/assets/stylesheets/bootstrap/utilities";
 @import "../components/bootstrap-sass/assets/stylesheets/bootstrap/responsive-utilities";
 
+[class^="icon-"]:before, [class*=" icon-"]:before {
+font-family: "datoscopio";
+font-style: normal;
+font-weight: normal;
+speak: none;
+
+display: inline-block;
+text-decoration: inherit;
+width: 1em;
+margin-right: .2em;
+text-align: center;
+/* opacity: .8; */
+
+/* For safety - reset parent styles, that can break glyph codes*/
+font-variant: normal;
+text-transform: none;
+
+/* fix buttons height, for twitter bootstrap */
+line-height: 1em;
+
+/* Animation center compensation - margins should be symmetric */
+/* remove if not needed */
+margin-left: .2em;
+
+/* you can be more comfortable with increased icons size */
+/* font-size: 120%; */
+
+/* Font smoothing. That was taken from TWBS */
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+
+/* Uncomment for 3D effect */
+/* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
 *,
 *:after,
 *::before {
@@ -92,6 +126,7 @@ body, html {
 
 html,
 body,
+#landing,
 .st-container,
 .st-pusher,
 .st-content {
@@ -120,6 +155,28 @@ body {
 
 }
 
+#landing {
+  width: 100%;
+  display: table;
+  z-index: 10;
+  @include linear-gradient(50deg, #0b24fb 0%, #6d7cfd 100%);
+  .content {
+    display:table-cell;
+    vertical-align: middle;
+    text-align: center;
+    h1 {
+      font-size: 2.3em;
+      line-height: 2em;
+      color: white;
+      text-transform: uppercase;
+    }
+    .icon-datoscopio {
+      font-size: 5em;
+      display: block;
+    }
+  }
+}
+
 header {
   position: absolute;
   top: 0;
@@ -145,6 +202,8 @@ header {
   }
 }
 
+
+
 // #home {
 //   background: url();
 //   background-color: #222;
@@ -158,33 +217,24 @@ header {
 //   padding: 0;
 // }
 
-.logo {
-  position: absolute;
-  left: 25px;
-  top: 50px;
-  margin: 0;
-  padding: 0;
-  text-indent: -9999px;
-  width: 113px;
-  height: 26px;
-  background: url(../assets/images/brand.svg);
-  background-size: 113px 26px;
-  @include transition(all 0.4s ease-in-out);
-  @include breakpoint(xs) {
-    top: 25px;
-  }
-  @include breakpoint(md) {
-    width: 113px;
-    height: 26px;
-    background-size: 113px 26px
-  }
-  @include breakpoint(lg) {
-    width: 147px;
-    height: 34px;
-    background-size: 147px 34px;
-  }
+.icon-twitter:before {
+  content: '\e800';
 }
-
+.icon-facebook-official:before {
+  content: '\e801';
+}
+.icon-instagram:before {
+  content: '\e802';
+}
+.icon-mail-alt:before {
+  content: '\e803';
+}
+.icon-datoscopio:before {
+  content: '\e804';
+}
+.icon-arrow:before {
+  content: '\e805';
+}
 
 .intro {
   position: absolute;

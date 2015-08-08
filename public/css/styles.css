@@ -1,4 +1,10 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto+Mono:100,300,400,500,700);
+@font-face {
+  font-family: "Datoscopio";
+  font-style: normal;
+  font-weight: normal;
+  src: url("../fonts/datoscopio.eot?#iefix") format("embedded-opentype"), url("../fonts/datoscopio.woff") format("woff"), url("../fonts/datoscopio.ttf") format("truetype"), url("../fonts/datoscopio.svg#Datoscopio") format("svg"); }
+
 /* ########
    Fuentes
    ######## */
@@ -4519,6 +4525,33 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+[class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "datoscopio";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */ }
+
 *,
 *:after,
 *::before {
@@ -4540,6 +4573,7 @@ body, html {
 
 html,
 body,
+#landing,
 .st-container,
 .st-pusher,
 .st-content {
@@ -4549,6 +4583,26 @@ body {
   line-height: 1.42857;
   background-color: transparent !important;
   color: grey; }
+
+#landing {
+  width: 100%;
+  display: table;
+  z-index: 10;
+  background-color: #0b24fb;
+  background-image: -webkit-linear-gradient(-320deg, #0b24fb 0%, #6d7cfd 100%);
+  background-image: linear-gradient(50deg,#0b24fb 0%, #6d7cfd 100%, , , , , , , , ); }
+  #landing .content {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center; }
+    #landing .content h1 {
+      font-size: 2.3em;
+      line-height: 2em;
+      color: white;
+      text-transform: uppercase; }
+    #landing .content .icon-datoscopio {
+      font-size: 5em;
+      display: block; }
 
 header {
   position: absolute;
@@ -4572,33 +4626,23 @@ header {
     padding: 0;
     margin: 10px 10px 0 50px; }
 
-.logo {
-  position: absolute;
-  left: 25px;
-  top: 50px;
-  margin: 0;
-  padding: 0;
-  text-indent: -9999px;
-  width: 113px;
-  height: 26px;
-  background: url(../assets/images/brand.svg);
-  background-size: 113px 26px;
-  -webkit-transition: all 0.4s ease-in-out;
-  -o-transition: all 0.4s ease-in-out;
-  transition: all 0.4s ease-in-out; }
-  @media (max-width: 767px) {
-    .logo {
-      top: 25px; } }
-  @media (min-width: 992px) {
-    .logo {
-      width: 113px;
-      height: 26px;
-      background-size: 113px 26px; } }
-  @media (min-width: 1200px) {
-    .logo {
-      width: 147px;
-      height: 34px;
-      background-size: 147px 34px; } }
+.icon-twitter:before {
+  content: '\e800'; }
+
+.icon-facebook-official:before {
+  content: '\e801'; }
+
+.icon-instagram:before {
+  content: '\e802'; }
+
+.icon-mail-alt:before {
+  content: '\e803'; }
+
+.icon-datoscopio:before {
+  content: '\e804'; }
+
+.icon-arrow:before {
+  content: '\e805'; }
 
 .intro {
   position: absolute;
