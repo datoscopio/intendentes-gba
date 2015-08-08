@@ -4675,7 +4675,10 @@ a {
   display: block;
   position: absolute;
   left: 50px;
-  bottom: 50px; }
+  bottom: 50px;
+  opacity: 1;
+  filter: alpha(opacity=100);
+  transition: opacity 1s; }
 
 .caption {
   position: absolute;
@@ -4683,11 +4686,14 @@ a {
   left: 0px;
   pointer-events: none;
   color: #000;
-  text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.9); }
+  text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.9);
+  opacity: 1;
+  filter: alpha(opacity=100);
+  transition: opacity 1s; }
   .caption h1 {
     display: block;
     width: auto;
-    font-size: 1.5em;
+    font-size: 1.4em;
     line-height: 1em;
     margin: 0 0 0 50px;
     text-transform: uppercase; }
@@ -4696,6 +4702,7 @@ a {
     width: 450px;
     font-size: 1.1em;
     font-weight: 400;
+    line-height: 1.5em;
     margin: 25px 0 0 50px; }
 
 .distrito {
@@ -4874,6 +4881,12 @@ a {
 .ficha.st-menu-open .st-pusher {
   -webkit-transform: translate3d(350px, 0, 0);
   transform: translate3d(350px, 0, 0); }
+  .ficha.st-menu-open .st-pusher .caption {
+    opacity: 0;
+    filter: alpha(opacity=0); }
+  .ficha.st-menu-open .st-pusher #menu {
+    opacity: 0;
+    filter: alpha(opacity=0); }
 
 .ficha.st-menu {
   -webkit-transform: translate3d(-100%, 0, 0);

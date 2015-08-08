@@ -30,8 +30,8 @@
       .range([1,20]);
 
   var projection = d3.geo.mercator()
-       .scale(30000)
-       .translate([width / 1.8, height / 1.9])
+       .scale(28000)
+       .translate([width / 1.6, height / 1.8])
        .center([-58.40000,-34.58900]);
 
   var zoom = d3.behavior.zoom()
@@ -265,8 +265,8 @@
         dy = bounds[1][1] - bounds[0][1],
         x = (bounds[0][0] + bounds[1][0]) / 2,
         y = (bounds[0][1] + bounds[1][1]) / 2,
-        scale = 0.8 / Math.max(dx / width, dy / height),
-        translate = [width / 2 - scale * x, height / 2 - scale * y];
+        scale = 0.6 / Math.max(dx / width, dy / height),
+        translate = [width / 2 - scale * x-200, height / 2 - scale * y];
 
     ficha
       .data(data)

@@ -302,6 +302,8 @@ a {
   position: absolute;
   left: 50px;
   bottom: 50px;
+  @include opacity(1);
+  transition: opacity 1s;
 }
 
 .caption {
@@ -311,10 +313,12 @@ a {
   pointer-events: none;
   color: #000;
   text-shadow: 0px 0px 5px rgba(255, 255, 255, .9);
+  @include opacity(1);
+  transition: opacity 1s;
   h1 {
     display: block;
     width: auto;
-    font-size: 1.5em;
+    font-size: 1.4em;
     line-height: 1em;
     
     margin: 0 0 0 50px;
@@ -325,6 +329,7 @@ a {
     width: 450px;
     font-size: 1.1em;
     font-weight: 400;
+    line-height: 1.5em;
     margin: 25px 0 0 50px;
   }
 }
@@ -566,6 +571,12 @@ a {
   &.st-menu-open .st-pusher {
     -webkit-transform: translate3d(350px, 0, 0);
     transform: translate3d(350px, 0, 0);
+    .caption {
+      @include opacity(0);
+    }
+    #menu {
+      @include opacity(0);
+    }
   }
   &.st-menu {
     -webkit-transform: translate3d(-100%, 0, 0);
