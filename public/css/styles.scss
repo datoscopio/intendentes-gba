@@ -472,17 +472,19 @@ a {
     font-weight: 400;
     line-height: 1.5em;
     margin: 25px 0 0 50px;
+    span {
+      font-size: .8em;
+      line-height: 5em;
+      color: rgba(black,.6);
+    }
   }
 }
 
 .ficha {
-  // position: absolute;
-  // top: 150px;
-  // left: 0px;
-  // padding: 20px;
-  // margin: 50px 0 0 50px;
-  // border: 1px solid black;
-  // width: 200px;
+  .nota {
+    font-size: .8em;
+    padding-top: 50px;
+  }
 }
 
 

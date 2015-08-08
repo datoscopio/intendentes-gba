@@ -257,9 +257,10 @@
         "<strong>Años en el cargo</strong><br>" +d.properties.tiempo+"<br>"+
         "<strong>Mandatos</strong><br>" +d.properties.mandatos+"<br>"+
         "<strong>Sucedió a</strong><br>" +d.properties.antes+"<br>"+
-        "<strong>Cargo por el que compite en 2015</strong><br>" +d.properties.cargo+"<br>"+
+        "<strong>Cargo por el que compite en 2015</strong><br>" +d.properties.compite+"<br>"+
         "<strong>Desempeño electoral 2011</strong><br>" +d.properties.pt2011+"%<br>"+
-        "<strong>Frente 2011</strong><br>" +d.properties.frente_2011);
+        "<strong>Frente 2011</strong><br>" +d.properties.frente_2011+
+        "<div class='nota'>Click en el mapa para cerrar.</div>");
         /*
         Intendente
         Distrito

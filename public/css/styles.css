@@ -4825,6 +4825,14 @@ a {
     font-weight: 400;
     line-height: 1.5em;
     margin: 25px 0 0 50px; }
+    .caption h3 span {
+      font-size: .8em;
+      line-height: 5em;
+      color: rgba(0, 0, 0, 0.6); }
+
+.ficha .nota {
+  font-size: .8em;
+  padding-top: 50px; }
 
 .distrito {
   cursor: pointer; }
