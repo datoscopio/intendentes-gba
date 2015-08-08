@@ -6,7 +6,11 @@
       data;
 
 
-  var cargoOrdinal = d3.scale.ordinal()
+  var cargoEscala = d3.scale.ordinal()
+    .domain(["Menos de 5", "Más 10", "Más de 20"])
+    .range(["#a5a3fb", "#7774f9", "#0000ff"]);
+
+  var votosEscala = d3.scale.ordinal()
     .domain(["Menos de 5", "Más 10", "Más de 20"])
     .range(["#a5a3fb", "#7774f9", "#0000ff"]);
 
@@ -27,7 +31,7 @@
 
   var projection = d3.geo.mercator()
        .scale(30000)
-       .translate([width / 2, height / 1.9])
+       .translate([width / 1.8, height / 1.9])
        .center([-58.40000,-34.58900]);
 
   var zoom = d3.behavior.zoom()
@@ -100,6 +104,8 @@
             "Intendente: " +d.properties.intendente+"<br>"+
             "Años en el cargo: " +d.properties.tiempocargo+"<br>"+
             "<strong>Click para más info sobre "+ d.properties.distrito + "</strong>");
+
+
       })
       .on("mouseout",  function(d,i) {
         tooltip.classed("hidden", true);
@@ -174,8 +180,8 @@
 
 
     svg.append("g")
-      .attr("class", "legendOrdinal")
-      .attr("transform", "translate(50," + height*.9 + ")")
+      .attr("class", "leyendaCargo")
+      .attr("transform", "translate("+(width-350)+"," + (height-110) + ")")
       .attr("shape-rendering", "crispEdges")
       .append("text")
       .attr("class", "legendRefence")
@@ -184,14 +190,14 @@
 
 
 
-    var legendOrdinal = d3.legend.color()
+    var leyendaCargo = d3.legend.color()
       .shapeWidth(90)
       .cells([2, 4, 10, 15, 24])
       .orient('horizontal')
-      .scale(cargoOrdinal);
+      .scale(cargoEscala);
 
-    svg.select(".legendOrdinal")
-      .call(legendOrdinal);
+    svg.select(".leyendaCargo")
+      .call(leyendaCargo);
 
 
     $('#menu [data-toggle="buttons"] .btn').click(function(){
@@ -244,10 +250,22 @@
         "<h1><strong>Intendente</strong><br>" +d.properties.intendente+"</h1>"+
         "<strong>Distrito</strong><br>"+d.properties.distrito+"<br>"+
         "<strong>Frente</strong><br>"+d.properties.frente_2011+"<br>"+
-        "Cantidad de años en el cargo</strong><br>" +d.properties.tiempocargo+"<br>"+
-        "<strong>Cantidad de mandatos</strong><br>" +d.properties.mandatos+"<br>"+
-        "<strong>Particularidades</strong><br>" +d.properties.particularidades);
+        "<strong>Años en el cargo</strong><br>" +d.properties.tiempocargo+"<br>"+
+        "<strong>Mandatos</strong><br>" +d.properties.mandatos+"<br>"+
+        "<strong>Sucedió a</strong><br>" +d.properties.antes+"<br>"+
+        "<strong>Desempeño electoral 2011</strong><br>" +d.properties.pt2011);
+        /*
+        Intendente
 
+        Distrito
+        Frente
+        Años en el cargo
+        Mandatos
+        Sucedió a
+        Desempeño electoral 2011 (%)
+
+        
+        */
     svg.transition()
         .duration(1500)
         .call(zoom.translate(translate).scale(scale).event);
@@ -265,7 +283,7 @@
 
   function zoomed() {
     g.style("stroke-width", 1 / d3.event.scale*0.1 + "px");
-    g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+    g.attr("transform", "translate(" + (d3.event.translate) + ")scale(" + (d3.event.scale) + ")");
     g.selectAll(".place-label")
      .style("font-size",getSize/d3.event.scale);
   }
