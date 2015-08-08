@@ -35,6 +35,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
 
 <script src="js/d3-legend.min.js"></script>
+<script src="js/classie.js"></script>
 
 </head>
 
@@ -42,17 +43,38 @@
 <!--[if lt IE 7]>
 <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
 <![endif]-->
-<div id="menu">
-  <div class="btn-group" role="group" aria-label="Opciones" data-toggle="buttons">
-    <label class="btn btn-default active">
-        <input type="radio" name="options" id="tiempocargo" autocomplete="off" checked>Años en el cargo
-    </label>
-    <label class="btn btn-default">
-        <input type="radio" name="options" id="votos_2011" autocomplete="off" checked>Votos 2011
-    </label>
-  </div>
-</div>
-<div id="gba"></div>
+<div id="st-container" class="st-container">
+  <div class="st-pusher">
+    <div class="tooltip"></div>
+    <div class="st-menu ficha"></div>
+    <div class="st-content">
+
+      <div class="st-content-inner">
+        <div class="main clearfix">
+          <header>
+            <hgroup>
+                <h1>Datoscopio 0.1</h1>
+                <h2>Elecciones 2015: conurbano bonaerense, territorio de disputa.</h2>
+            </hgroup>
+          </header>
+
+          <div id="menu">
+            <div class="btn-group" role="group" aria-label="Opciones" data-toggle="buttons">
+              <label class="btn btn-default active">
+                  <input type="radio" name="options" id="tiempocargo" autocomplete="off" checked>Años en el cargo
+              </label>
+              <label class="btn btn-default">
+                  <input type="radio" name="options" id="votos_2011" autocomplete="off" checked>Votos 2011
+              </label>
+            </div>
+          </div><!-- /#menu -->
+
+          <div id="conourbano"></div><!-- /#conourbano -->
+        </div><!-- /main -->
+      </div><!-- /st-content-inner -->
+    </div><!-- /st-content -->
+  </div><!-- /st-pusher -->
+</div><!-- /st-container -->
 <script src="js/app.js"></script>
 </body>
 </html>
