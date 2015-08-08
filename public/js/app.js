@@ -34,6 +34,11 @@
        .translate([width / 1.6, height / 1.8])
        .center([-58.40000,-34.58900]);
 
+  var pathconurbanoLinea = d3.geo.mercator()
+       .scale(31000)
+       .translate([width / 2, height / 2])
+       .center([-58.40000,-34.58900]);
+
   var zoom = d3.behavior.zoom()
       .translate([0, 0])
       .scale(1)
@@ -43,11 +48,17 @@
   var path = d3.geo.path()
       .projection(projection);
 
+  var pathconurbanoLinea = d3.geo.path()
+      .projection(pathconurbanoLinea);
+
   var tooltip = d3.select(".tooltip")
       .style("display", "none");
 
   var ficha = d3.select(".ficha");
 
+  var conurbanoLinea = d3.select(".mapaConurbanoLinea").append("svg")
+      .attr("width", width)
+      .attr("height", height);
 
   var svg = d3.select("#conurbano").append("svg")
       .attr("width", width)
@@ -60,7 +71,8 @@
       .attr("height", height)
       .on("click", resetMap);
 
-  var g = svg.append("g");
+  var g = svg.append("g"),
+      gLinea = conurbanoLinea.append("g");
 
   svg
       // .call(zoom)
@@ -80,6 +92,12 @@
 
     colorText.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
     color.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
+
+    gLinea.selectAll("path")
+      .data(data)
+      .enter().append("path")
+        .attr("d", pathconurbanoLinea)
+        .attr("class", "distrito");
 
     g.selectAll("path")
         .data(data)

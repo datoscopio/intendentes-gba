@@ -127,6 +127,7 @@ body, html {
 html,
 body,
 #landing,
+#explicacion,
 .st-container,
 .st-pusher,
 .st-content {
@@ -173,6 +174,51 @@ body {
     .icon-datoscopio {
       font-size: 5em;
       display: block;
+    }
+  }
+}
+
+#explicacion {
+  width: 100%;
+  display: table;
+  background-color: white;
+  .content {
+    position: relative;
+    display:table-cell;
+    vertical-align: middle;
+    text-align: center;
+    .titulo {
+      margin: 0 auto;
+      width: 500px;
+      color: #0b24fb;
+      position: relative;
+      z-index: 10;
+    }
+    .contenido {
+      padding-top: 50px;
+      margin: 0 auto;
+      width: 500px;
+      color: #333333;
+      font-size: 1.4em;
+      font-weight: 400;
+      position: relative;
+      z-index: 10;
+    }
+  }
+}
+
+.mapaConurbanoLinea {
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 9;
+  svg {
+    border: 1px solid red;
+    .distrito {
+      fill: #ced3fe;
+      pointer-events: none;
     }
   }
 }
