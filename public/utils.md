@@ -45,6 +45,9 @@ https://pixelbeat.cartodb.com/tables/poligonos_gba/map
 topojson -o public/data/gba.json --bbox -p antes,cabecera,distrito,codigo,mandatos,frente_2011,frente_alianza,intendente,tiempocargo,votos_2011,pt2011,particularidades conourbano.geojson
 
 
+topojson -o gba.json --bbox -p distrito,intendente,cargo,compite,mandatos,tiempo,antes,pt2011,votos_2011,frentealianza_2015,frente_201 conurbano.geojson
+
+
 http://bl.ocks.org/bycoffe/3230965
 
 http://www.coppelia.io/2014/07/an-a-to-z-of-extra-features-for-the-d3-force-layout/

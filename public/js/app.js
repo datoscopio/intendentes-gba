@@ -49,7 +49,7 @@
   var ficha = d3.select(".ficha");
 
 
-  var svg = d3.select("#conourbano").append("svg")
+  var svg = d3.select("#conurbano").append("svg")
       .attr("width", width)
       .attr("height", height)
       .on("click", stopped, true);
@@ -67,23 +67,22 @@
       .call(zoom.event);
 
   queue()
-      .defer(d3.csv, "./data/precandidatos.csv")
       .defer(d3.json, "./data/gba.json")
       .await(ready);
 
 
-  function ready(error, precandidatos, gba) {
+  function ready(error, gba) {
     if (error) throw error;
 
-    data = topojson.feature(gba, gba.objects.conourbano).features;
+    data = topojson.feature(gba, gba.objects.conurbano).features;
 
-    var referencia = "tiempocargo";
+    var referencia = "tiempo";
 
     colorText.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
     color.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
 
     g.selectAll("path")
-        .data(topojson.feature(gba, gba.objects.conourbano).features)
+        .data(data)
       .enter().append("path")
         .attr("d", path)
         .attr("class", "distrito")
@@ -96,13 +95,13 @@
       .on("mousemove", function(d,i) {
         var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
         tooltip
-          .data(topojson.feature(gba, gba.objects.conourbano).features)
+          .data(topojson.feature(gba, gba.objects.conurbano).features)
           .classed("hidden", false)
           .attr("style", "left:"+(mouse[0]+25)+"px;top:"+mouse[1]+"px")
           .html(
             "Distrito: <strong>"+d.properties.distrito+"</strong><br>"+
             "Intendente: " +d.properties.intendente+"<br>"+
-            "Años en el cargo: " +d.properties.tiempocargo+"<br>"+
+            "Años en el cargo: " +d.properties.tiempo+"<br>"+
             "Cantidad de votos en 2011: " +formatearMiles(d.properties.votos_2011)+"<br>"+
             "<strong>Click para más info</strong>");
 
@@ -115,27 +114,10 @@
 
 
       g.append("path")
-          .datum(topojson.mesh(gba, gba.objects.conourbano, function(a, b) { return a !== b; }))
+          .datum(topojson.mesh(gba, gba.objects.conurbano, function(a, b) { return a !== b; }))
           .attr("class", "bordes")
           .attr("d", path);
 
-      
-    /* 
-
-    // WIP Inyectar nodos circulares para transicion a Force Layout
-
-    g.selectAll(".node")
-      .data(topojson.feature(gba, gba.objects.gba).features)
-      .enter().append("circle")
-      .attr("class", "node")
-      .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
-      .attr("r", 5);
-      // .data(topojson.feature(gba, gba.objects.conourbano).features)
-      // .attr("r", function(d) {
-      //   return radio(d.properties.tiempocargo);
-      // });
-    
-    */ 
 
 
 
@@ -154,27 +136,7 @@
                 return 1;
               }
         })
-          // if (this.getComputedTextLength() === 85.81396484375 && path.area(d) === 1124.8116102908389) {
-          //     console.log(path.area(d));
-          //     return 4;
-              
-          // }
-          //   var textSize = Math.round(this.getComputedTextLength());
-          //   // console.log(this.getComputedTextLength())
-          // if (textSize <= 50 ) {
-          //   return Math.min(path.area(d), (path.area(d)) / this.getComputedTextLength() * .05);
-          // } else if (textSize >= 75) {
-          //   return Math.min(path.area(d), (path.area(d)) / this.getComputedTextLength() * .05);
-          // } else if (textSize >= 100) {
-          //   return 7;
-          // } else if (textSize >= 150) {
-          //   return 6;
-          // } else {
-          //   return 5;
-          // }
 
-          // return Math.min(path.area(d) * /.5, (path.area(d)*.5) / this.getComputedTextLength() * .05); 
-        
         .style("fill", function(d) {
           return colorText(d.properties[referencia]);
         });
@@ -220,7 +182,7 @@
 
         referencia = $(this).find('input').attr('id');
 
-        if (referencia === "tiempocargo") {
+        if (referencia === "tiempo") {
           svg.select(".leyendaVotos").style("display", "none");
           svg.select(".leyendaCargo").style("display", "block");
         } else {
@@ -273,21 +235,21 @@
       .html(
         "<h1><strong>Intendente</strong><br>" +d.properties.intendente+"</h1>"+
         "<strong>Distrito</strong><br>"+d.properties.distrito+"<br>"+
-        "<strong>Frente</strong><br>"+d.properties.frente_2011+"<br>"+
-        "<strong>Años en el cargo</strong><br>" +d.properties.tiempocargo+"<br>"+
+        "<strong>Frente - Alianza</strong><br>"+d.properties.frentealianza_2015+"<br>"+
+        "<strong>Cuantos años llevan en el cargo</strong><br>" +d.properties.tiempo+"<br>"+
         "<strong>Mandatos</strong><br>" +d.properties.mandatos+"<br>"+
         "<strong>Sucedió a</strong><br>" +d.properties.antes+"<br>"+
-        "<strong>Desempeño electoral 2011</strong><br>" +d.properties.pt2011);
+        "<strong>Desempeño electoral 2011</strong><br>" +d.properties.pt2011+"<br>"+
+        "<strong>Frente 2011</strong><br>" +d.properties.frente_2011);
         /*
         Intendente
-
         Distrito
-        Frente
+        Frente - Alianza
         Años en el cargo
         Mandatos
         Sucedió a
-        Desempeño electoral 2011 (%)
-
+        Desempeño electoral 2011 %
+        Frente 2011
         
         */
     svg.transition()
@@ -384,7 +346,7 @@
 
       var container = document.getElementById('st-container' ),
                   reset = document.getElementById( 'closeMenu' ),
-        buttons = Array.prototype.slice.call( document.querySelectorAll( '#conourbano > svg > g > path' ) ),
+        buttons = Array.prototype.slice.call( document.querySelectorAll( '#conurbano > svg > g > path' ) ),
         // event type (if mobile use touch events)
         eventtype = mobilecheck() ? 'touchstart' : 'click',
         resetMenu = function() {
