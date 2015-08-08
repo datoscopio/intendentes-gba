@@ -301,7 +301,7 @@ a {
   display: block;
   position: absolute;
   left: 50px;
-  bottom: 100px;
+  bottom: 50px;
 }
 
 .caption {
@@ -390,20 +390,9 @@ a {
   letter-spacing: -4;
 }
 
-.key path {
-  display: none;
-}
 
-.key line {
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-.key {
-  fill-opacity: .8;
-}
-
-.symbol {
-  fill: red;
+.label {
+  font-size: 0.8em;
 }
 
 .hidden { 

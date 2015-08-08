@@ -10,8 +10,8 @@
     .domain(["Menos de 5", "Más 10", "Más de 20"])
     .range(["#a5a3fb", "#7774f9", "#0000ff"]);
 
-  var votosEscala = d3.scale.ordinal()
-    .domain(["Menos de 5", "Más 10", "Más de 20"])
+  var votoEscala = d3.scale.ordinal()
+    .domain(["Menos de 50 mil", "Más 100 mil", "Más de 350 mil"])
     .range(["#a5a3fb", "#7774f9", "#0000ff"]);
 
   var color = d3.scale.quantize()
@@ -103,7 +103,8 @@
             "Distrito: <strong>"+d.properties.distrito+"</strong><br>"+
             "Intendente: " +d.properties.intendente+"<br>"+
             "Años en el cargo: " +d.properties.tiempocargo+"<br>"+
-            "<strong>Click para más info sobre "+ d.properties.distrito + "</strong>");
+            "Cantidad de votos en 2011: " +formatearMiles(d.properties.votos_2011)+"<br>"+
+            "<strong>Click para más info</strong>");
 
 
       })
@@ -181,28 +182,51 @@
 
     svg.append("g")
       .attr("class", "leyendaCargo")
-      .attr("transform", "translate("+(width-350)+"," + (height-110) + ")")
+      .attr("transform", "translate("+(width-350)+"," + (height-75) + ")")
       .attr("shape-rendering", "crispEdges")
       .append("text")
       .attr("class", "legendRefence")
         .attr("dy", "-1.20em")
         .text("Años en el cargo")
 
-
-
     var leyendaCargo = d3.legend.color()
       .shapeWidth(90)
-      .cells([2, 4, 10, 15, 24])
       .orient('horizontal')
       .scale(cargoEscala);
 
     svg.select(".leyendaCargo")
       .call(leyendaCargo);
 
+    svg.append("g")
+      .attr("class", "leyendaVotos")
+      .style("display", "none")
+      .attr("transform", "translate("+(width-350)+"," + (height-75) + ")")
+      .attr("shape-rendering", "crispEdges")
+      .append("text")
+      .attr("class", "legendRefence")
+        .attr("dy", "-1.20em")
+        .text("Cantidad de votos 2011")
+
+    var leyendaVotos = d3.legend.color()
+      .shapeWidth(110)
+      .cells([30000, 50000, 80000, 120000, 350000])
+      .orient('horizontal')
+      .scale(votoEscala);
+
+    svg.select(".leyendaVotos")
+      .call(leyendaVotos);
 
     $('#menu [data-toggle="buttons"] .btn').click(function(){
 
         referencia = $(this).find('input').attr('id');
+
+        if (referencia === "tiempocargo") {
+          svg.select(".leyendaVotos").style("display", "none");
+          svg.select(".leyendaCargo").style("display", "block");
+        } else {
+          svg.select(".leyendaVotos").style("display", "block");
+          svg.select(".leyendaCargo").style("display", "none");
+        }
 
         resetMap();
 
