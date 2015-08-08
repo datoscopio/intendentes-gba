@@ -328,6 +328,30 @@ a {
   }
 }
 
+.distrito {
+    stroke: transparent;
+    stroke-width: 0;
+    transition: stroke .2s linear, opacity .2s linear;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-miterlimit: 4;
+}
+
+.distrito:hover {
+    stroke: rgba(255,255,255,.8);
+    stroke-width: 2;
+    cursor: pointer;
+}
+
+.bordes {
+  pointer-events: none;
+  fill: none;
+  stroke-width: 1;
+  stroke: #fff;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-miterlimit: 4;
+}
 
 .place,
 .place-label {
@@ -335,13 +359,6 @@ a {
   text-anchor: middle;
   font-size: 13px;
   letter-spacing: -4;
-}
-
-.bordes {
-  fill: none;
-  stroke: #fff;
-  stroke-linecap: round;
-  stroke-linejoin: round;
 }
 
 .key path {

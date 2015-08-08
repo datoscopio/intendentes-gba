@@ -6,9 +6,9 @@
       data;
 
 
-  var linear = d3.scale.linear()
-    .domain([2,5,10,15,24])
-    .range(["#d2d1fd", "#a5a3fb", "#7774f9", "#4a46f7", "#0000ff"]);
+  var cargoOrdinal = d3.scale.ordinal()
+    .domain(["Menos de 5", "Más 10", "Más de 20"])
+    .range(["#a5a3fb", "#7774f9", "#0000ff"]);
 
   var color = d3.scale.quantize()
     // .domain([2,24])
@@ -106,14 +106,13 @@
       });
 
 
-    g.append("path")
-        .datum(topojson.mesh(gba, gba.objects.conourbano, function(a, b) { return a !== b; }))
-        .attr("class", "bordes")
-        .attr("d", path);
 
-   
+      g.append("path")
+          .datum(topojson.mesh(gba, gba.objects.conourbano, function(a, b) { return a !== b; }))
+          .attr("class", "bordes")
+          .attr("d", path);
 
-
+      
     /* 
 
     // WIP Inyectar nodos circulares para transicion a Force Layout
@@ -175,18 +174,24 @@
 
 
     svg.append("g")
-      .attr("class", "legendLinear")
+      .attr("class", "legendOrdinal")
       .attr("transform", "translate(50," + height*.9 + ")")
-      .attr("shape-rendering", "crispEdges");
+      .attr("shape-rendering", "crispEdges")
+      .append("text")
+      .attr("class", "legendRefence")
+        .attr("dy", "-1.20em")
+        .text("Años en el cargo")
 
-    var legendLinear = d3.legend.color()
-      .shapeWidth(30)
+
+
+    var legendOrdinal = d3.legend.color()
+      .shapeWidth(90)
       .cells([2, 4, 10, 15, 24])
       .orient('horizontal')
-      .scale(linear);
+      .scale(cargoOrdinal);
 
-    svg.select(".legendLinear")
-      .call(legendLinear);
+    svg.select(".legendOrdinal")
+      .call(legendOrdinal);
 
 
     $('#menu [data-toggle="buttons"] .btn').click(function(){
@@ -260,7 +265,7 @@
   }
 
   function zoomed() {
-    g.style("stroke-width", 1.5 / d3.event.scale + "px");
+    g.style("stroke-width", 1 / d3.event.scale*0.1 + "px");
     g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
     g.selectAll(".place-label")
      .style("font-size",getSize/d3.event.scale);
