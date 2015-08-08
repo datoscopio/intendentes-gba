@@ -1,64 +1,12 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js" itemscope itemtype="http://schema.org/Dataset">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="" />
-
-<meta itemprop="name" content="">
-<meta itemprop="description" content="">
-
-<meta name="twitter:card" content="product">
-<meta name="twitter:site" content="@">
-<meta name="twitter:title" content="">
-<meta name="twitter:description" content="">
-
-<meta property="og:title" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="http://www.datoscop.io/" />
-<meta property="og:description" content="" />
-<meta property="og:site_name" content="Datoscopio" />
-
-<link href="css/styles.min.css" rel="stylesheet" media="screen">
-
-<script type="text/javascript" src="components/modernizr/modernizr.js"></script>
-<script type="text/javascript" src="components/jquery/dist/jquery.min.js"></script><script type="text/javascript" src="components/bootstrap-sass/assets/javascripts/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
-
-</head>
-
-<body>
-<!--[if lt IE 7]>
-<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-<![endif]-->
-<div id="menu">
-  <div class="btn-group" role="group" aria-label="Opciones" data-toggle="buttons">
-    <label class="btn btn-default active">
-        <input type="radio" name="options" id="votos_2011" autocomplete="off" checked>Votos 2011
-    </label>
-    <label class="btn btn-default">
-        <input type="radio" name="options" id="anos_en_el_cargo" autocomplete="off" checked>Años en el cargo
-    </label>
-  </div>
-</div>
-<div id="gba"></div>
-<script>
-
-
-
-
 var width = Math.max(960, window.innerWidth),
     height = Math.max(500, window.innerHeight),
     active = d3.select(null),
     data;
 
+
+var linear = d3.scale.linear()
+  .domain([2,5,10,15,24])
+  .range(["#d2d1fd", "#a5a3fb", "#7774f9", "#4a46f7", "#0000ff"]);
 
 var color = d3.scale.quantize()
   // .domain([2,24])
@@ -77,7 +25,7 @@ var radio = d3.scale.linear()
 
 var projection = d3.geo.mercator()
      .scale(30000)
-     .translate([width / 2, height / 2])
+     .translate([width / 2, height / 1.9])
      .center([-58.40000,-34.58900]);
 
 var zoom = d3.behavior.zoom()
@@ -94,7 +42,7 @@ var tooltip = d3.select("body").append("div")
     .style("display", "none");
 
 
-var svg = d3.select("#gba").append("svg")
+var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height)
     .on("click", stopped, true);
@@ -112,22 +60,22 @@ svg
     .call(zoom.event);
 
 queue()
-    .defer(d3.json, "data/gba.json")
+    .defer(d3.json, "/data/gba.json")
     .await(ready);
 
 
 function ready(error, gba) {
   if (error) throw error;
 
-  data = topojson.feature(gba, gba.objects.poligonos_gba).features;
+  data = topojson.feature(gba, gba.objects.conourbano).features;
 
-  var referencia = "votos_2011";
+  var referencia = "tiempocargo";
 
   colorText.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
   color.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
 
   g.selectAll("path")
-      .data(topojson.feature(gba, gba.objects.poligonos_gba).features)
+      .data(topojson.feature(gba, gba.objects.conourbano).features)
     .enter().append("path")
       .attr("d", path)
       .attr("class", "distrito")
@@ -138,13 +86,14 @@ function ready(error, gba) {
     .on("mousemove", function(d,i) {
       var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
       tooltip
-        .data(topojson.feature(gba, gba.objects.poligonos_gba).features)
+        .data(topojson.feature(gba, gba.objects.conourbano).features)
         .classed("hidden", false)
         .attr("style", "left:"+(mouse[0]+25)+"px;top:"+mouse[1]+"px")
         .html(
+          "Distrito: <strong>"+d.properties.distrito+"</strong><br>"+
           "Intendente: " +d.properties.intendente+"<br>"+
-          "Años en el cargo: " +d.properties.anos_en_el_cargo+"<br>"+
-          "Cantidad de votos 2011: " +formatearMiles(d.properties[referencia]));
+          "Años en el cargo: " +d.properties.tiempocargo+"<br>"+
+          "Cantidad de votos 2011: " +formatearMiles(d.properties.votos_2011)+ " votos");
     })
     .on("mouseout",  function(d,i) {
       tooltip.classed("hidden", true)
@@ -152,7 +101,7 @@ function ready(error, gba) {
 
 
   g.append("path")
-      .datum(topojson.mesh(gba, gba.objects.poligonos_gba, function(a, b) { return a !== b; }))
+      .datum(topojson.mesh(gba, gba.objects.conourbano, function(a, b) { return a !== b; }))
       .attr("class", "bordes")
       .attr("d", path);
 
@@ -167,9 +116,9 @@ function ready(error, gba) {
     .attr("class", "node")
     .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
     .attr("r", 5);
-    // .data(topojson.feature(gba, gba.objects.poligonos_gba).features)
+    // .data(topojson.feature(gba, gba.objects.conourbano).features)
     // .attr("r", function(d) {
-    //   return radio(d.properties.anos_en_el_cargo);
+    //   return radio(d.properties.tiempocargo);
     // });
   
   */ 
@@ -181,13 +130,54 @@ function ready(error, gba) {
     .enter().append("text")
       .attr("class", "place-label")
       .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
-      .text(function(d) { return d.properties.departamento; })
+      .attr("dy", "-.20em")
+      .text(function(d) { return d.properties.distrito; })
+      .call(wrap, 75)
+      .style("opacity", function(d) {
+            if (this.getComputedTextLength() > 60 && path.area(d) < 9000 ) {
+              return 0;
+            } else {
+              return 1;
+            }
+      })
+        // if (this.getComputedTextLength() === 85.81396484375 && path.area(d) === 1124.8116102908389) {
+        //     console.log(path.area(d));
+        //     return 4;
+            
+        // }
+        //   var textSize = Math.round(this.getComputedTextLength());
+        //   // console.log(this.getComputedTextLength())
+        // if (textSize <= 50 ) {
+        //   return Math.min(path.area(d), (path.area(d)) / this.getComputedTextLength() * .05);
+        // } else if (textSize >= 75) {
+        //   return Math.min(path.area(d), (path.area(d)) / this.getComputedTextLength() * .05);
+        // } else if (textSize >= 100) {
+        //   return 7;
+        // } else if (textSize >= 150) {
+        //   return 6;
+        // } else {
+        //   return 5;
+        // }
+
+        // return Math.min(path.area(d) * /.5, (path.area(d)*.5) / this.getComputedTextLength() * .05); 
+      
       .style("fill", function(d) {
         return colorText(d.properties[referencia]);
-      })
-      .each(getSize)
-      .style("font-size", function(d) { return d.scale + "px"; });
+      });
 
+
+  svg.append("g")
+    .attr("class", "legendLinear")
+    .attr("transform", "translate(20,20)");
+
+  var legendLinear = d3.legend.color()
+    .shapeWidth(30)
+    .cells([2, 4, 10, 15, 24])
+    .orient('horizontal')
+    .scale(linear);
+
+  svg.select(".legendLinear")
+    .call(legendLinear);
 
 
   $('[data-toggle="buttons"] .btn').click(function(){
@@ -218,6 +208,8 @@ function ready(error, gba) {
   });
 };
 
+
+
 function clicked(d) {
   if (active.node() === this) return reset();
   active.classed("active", false);
@@ -228,7 +220,7 @@ function clicked(d) {
       dy = bounds[1][1] - bounds[0][1],
       x = (bounds[0][0] + bounds[1][0]) / 2,
       y = (bounds[0][1] + bounds[1][1]) / 2,
-      scale = .5 / Math.max(dx / width, dy / height),
+      scale = 0.8 / Math.max(dx / width, dy / height),
       translate = [width / 2 - scale * x, height / 2 - scale * y];
 
   svg.transition()
@@ -245,18 +237,21 @@ function reset() {
       .call(zoom.translate([0, 0]).scale(1).event)
 }
 
+function zoomed() {
+  g.style("stroke-width", 1.5 / d3.event.scale + "px");
+  g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+  g.selectAll(".place-label")
+   .style("font-size",getSize/d3.event.scale);
+   // Revisar como volver a incorporar una tipografia acorde de tamaño.
+   // .style("opacity", "0");
+  //   .style("font-size", function(d) { return Math.min(path.area(d)*.005, (path.area(d)) / this.getComputedTextLength() * .05)/d3.event.scale })
+}
+
 function getSize(d) {
   var bbox = this.getBBox(),
       cbbox = this.parentNode.getBBox(),
       scale = Math.min(cbbox.width/bbox.width, cbbox.height/bbox.height);
   d.scale = scale;
-}
-
-function zoomed() {
-  g.style("stroke-width", 1.5 / d3.event.scale + "px");
-  g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-  g.selectAll(".place-label")
-    .style("font-size",getSize/d3.event.scale);
 }
 
 // If the drag behavior prevents the default click,
@@ -274,7 +269,7 @@ function wrap(text, width) {
         word,
         line = [],
         lineNumber = 0,
-        lineHeight = 1.1, // ems
+        lineHeight = 1, // ems
         y = text.attr("y"),
         dy = parseFloat(text.attr("dy")),
         tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
@@ -290,9 +285,3 @@ function wrap(text, width) {
     }
   });
 }
-
-
-
-
-
-</script>

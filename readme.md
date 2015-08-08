@@ -23,6 +23,16 @@ ALMIRANTE BROWN
 TIGRE
 EZEIZA
 
+update actuales set cargo = initcap(cargo);
+
+update nuevos_poligonos_gba set distrito = initcap(distrito);
+
+update conourbano set sucedio_a = initcap(sucedio_a);
+
+
+conourbano
+
+
 
 
 SELECT cabecera, departamento, codigo, the_geom_webmercator , ST_PointOnSurface(the_geom) the_geom FROM  departamentos_buenos_aires
@@ -45,7 +55,7 @@ SELECT * FROM departamentos_buenos_aires WHERE departamento LIKE  '%MERLO%' OR d
 
 https://pixelbeat.cartodb.com/tables/poligonos_gba/map
 
-topojson -o public/data/gba.json --bbox -p cabecera,departamento,codigo,intendente,anos_en_el_cargo,votos_2011 gba.geojson poligonos_gba.geojson
+topojson -o public/data/gba.json --bbox -p antes,cabecera,distrito,codigo,frente_2011,frente_alianza,intendente,tiempocargo,votos_2011,pt2011 conourbano.geojson
 
 
 http://bl.ocks.org/mbostock/1129492
