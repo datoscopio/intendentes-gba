@@ -63,8 +63,8 @@
       .call(zoom.event);
 
   queue()
-      .defer(d3.csv, "/data/precandidatos.csv")
-      .defer(d3.json, "/data/gba.json")
+      .defer(d3.csv, "./data/precandidatos.csv")
+      .defer(d3.json, "./data/gba.json")
       .await(ready);
 
 
@@ -381,5 +381,5 @@
 
     }
 
-  
+
 })();
