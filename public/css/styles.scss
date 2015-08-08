@@ -175,6 +175,18 @@ body {
       font-size: 5em;
       display: block;
     }
+    .flecha {
+      a {
+        color: white;
+        position: relative;
+        z-index: 10;
+      }
+      .icon-arrow {
+        position: relative;
+        z-index: 10;
+        border: 1px solid rgba(white,0.5);
+      }
+    }
   }
 }
 
@@ -204,6 +216,18 @@ body {
       position: relative;
       z-index: 10;
     }
+    .flecha {
+      a {
+        color: #0b24fb;
+        position: relative;
+        z-index: 10;
+      }
+      .icon-arrow {
+        position: relative;
+        z-index: 10;
+        border: 1px solid rgba(#0b24fb,0.5);
+      }
+    }
   }
 }
 
@@ -215,12 +239,33 @@ body {
   top: 0;
   z-index: 9;
   svg {
-    border: 1px solid red;
     .distrito {
       fill: #ced3fe;
       pointer-events: none;
     }
   }
+}
+
+h4 {
+  padding-top: 100px;
+  color: rgba(white,.5);
+  font-size: 1.1em;
+  font-weight: 400;
+  pointer-events: all;
+
+}
+.icon-arrow {
+  width: 62px;
+  padding: 20px 0;
+  margin: 0 auto;
+  margin-bottom: 25px;
+  text-align: center;
+  font-size: 1.2em;
+  display: block;
+  @include border-top-radius(85px);
+  @include border-right-radius(85px);
+  @include border-bottom-radius(85px);
+  @include border-left-radius(85px);
 }
 
 header {
