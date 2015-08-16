@@ -117,10 +117,10 @@
           .classed("hidden", false)
           .attr("style", "left:"+(mouse[0]+25)+"px;top:"+mouse[1]+"px")
           .html(
-            "Distrito: <strong>"+d.properties.distrito+"</strong><br>"+
+            "Municipio: <strong>"+d.properties.distrito+"</strong><br>"+
             "Intendente: " +d.properties.intendente+"<br>"+
             "Años en el cargo: " +d.properties.tiempo+"<br>"+
-            "Cantidad de votos en 2011: " +formatearMiles(d.properties.votos_2011)+"<br>"+
+            "Frente: " +d.properties.frente_2011+"<br>"+
             "<strong>Click para más info</strong>");
 
 
@@ -147,7 +147,7 @@
         .attr("dy", "-.20em")
         .text(function(d) { return d.properties.distrito; })
         .call(wrap, 75)
-        .style("opacity", function(d) {
+        .style("fill-opacity", function(d) {
               if (this.getComputedTextLength() > 60 && path.area(d) < 9000 ) {
                 return 0;
               } else {
@@ -203,12 +203,15 @@
         if (referencia === "tiempo") {
           svg.select(".leyendaVotos").style("display", "none");
           svg.select(".leyendaCargo").style("display", "block");
-        } else {
+        } else if (referencia === "votos_2011") {
           svg.select(".leyendaVotos").style("display", "block");
           svg.select(".leyendaCargo").style("display", "none");
+        } else if (referencia === "votos_p2015") {
+          console.log('Nueva version');
         }
 
         resetMap();
+
 
 
         colorText.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
@@ -219,6 +222,7 @@
             .duration(1500)
             .delay(function(d, i) { return i / data.length * 500; })
             .style("fill", function (d) {
+              console.table(d.properties[referencia]);
               return color(d.properties[referencia]);
             });
 
@@ -248,30 +252,49 @@
         scale = 0.6 / Math.max(dx / width, dy / height),
         translate = [width / 2 - scale * x-200, height / 2 - scale * y];
 
+
+/* 
+
+- Intendente
+- Municipio
+- Frente / Alianza
+- Mandatos:
+- Sucedió a:
+- Cargo por el que compite. 
+
+Elecciones 2011
+Frente:
+Desempeño electoral: % 9999
+
+Elecciones PASO 2015
+Frente:
+Desempeño electoral: %9999
+
+Situación frente a las elecciones de Octubre (Va o no acá dependiendo de lo que decidamos hacer.)
+
+
+
+*/
+
+
     ficha
       .data(data)
       .html(
         "<h1><strong>Intendente</strong><br>" +d.properties.intendente+"</h1>"+
-        "<strong>Distrito</strong><br>"+d.properties.distrito+"<br>"+
-        "<strong>Frente - Alianza</strong><br>"+d.properties.frentealianza_2015+"<br>"+
+        "<strong>Municipio</strong><br>"+d.properties.distrito+"<br>"+
+        "<strong>Frente - Alianza</strong><br>"+d.properties.frente_alianza_2015+"<br>"+
         "<strong>Años en el cargo</strong><br>" +d.properties.tiempo+"<br>"+
         "<strong>Mandatos</strong><br>" +d.properties.mandatos+"<br>"+
         "<strong>Sucedió a</strong><br>" +d.properties.antes+"<br>"+
-        "<strong>Cargo por el que compite en 2015</strong><br>" +d.properties.compite+"<br>"+
-        "<strong>Desempeño electoral 2011</strong><br>" +d.properties.pt2011+"%<br>"+
-        "<strong>Frente 2011</strong><br>" +d.properties.frente_2011+
+        "<strong>Cargo por el que compite en 2015</strong><br>" +d.properties.compite+
+        "<h4>Elecciones 2011</h4>"+
+        "<strong>Frente 2011</strong><br>" +d.properties.frente_2011+"<br>"+
+        "<strong>Desempeño electoral</strong><br>" +d.properties.pt2011+"%<br>"+
+        "<h4>Elecciones P.A.S.O. 2015</h4>"+
+        "<strong>Frente - Alianza 2015</strong><br>" +d.properties.frente_alianza_2015+"<br>"+
+        "<strong>Desempeño electoral</strong><br>" +d.properties.ptp2015+"%<br>"+
+        "<strong>Situación frente a las elecciones de Octubre</strong><br>" +d.properties.generales+
         "<div class='nota'>Click en el mapa para cerrar.</div>");
-        /*
-        Intendente
-        Distrito
-        Frente - Alianza
-        Años en el cargo
-        Mandatos
-        Sucedió a
-        Desempeño electoral 2011 %
-        Frente 2011
-        
-        */
     svg.transition()
         .duration(1500)
         .call(zoom.translate(translate).scale(scale).event);
@@ -279,19 +302,30 @@
   }
 
   function resetMap() {
-    // ficha.classed("hidden", true);
     active.classed("active", false);
     active = d3.select(null);
+    /*
+    g.selectAll(".place-label")
+     .transition().duration(1000).style("font-size","0.8");
+    */
     svg.transition()
         .duration(2000)
         .call(zoom.translate([0, 0]).scale(1).event);
   }
 
-  function zoomed() {
-    g.style("stroke-width", 1 / d3.event.scale*0.1 + "px");
+  function zoomed(d) {
+    g.style("stroke-width", 4 / d3.event.scale + "px");
     g.attr("transform", "translate(" + (d3.event.translate) + ")scale(" + (d3.event.scale) + ")");
+    // if (active.node() && path.area(d) < 9000 ) {
+    //   console.log("This is a large place!");
+    // } else if (active.node() && path.area(d) < 2000) {
+    //   console.log("Not so large place!");
+    // }
+    /*
+    console.log(active.node())
     g.selectAll(".place-label")
-     .style("font-size",getSize/d3.event.scale);
+     .transition().duration(1000).style("font-size",0.5*d3.event.scale).style("fill-opacity", "1");
+    */
   }
 
   function getSize(d) {
@@ -371,6 +405,7 @@
         bodyClickFn = function(evt) {
           resetMap();
           if( !hasParentClass( evt.target, 'st-menu' ) ) {
+            console.log(!hasParentClass( evt.target, 'st-menu' ))
             resetMenu();
             document.removeEventListener( eventtype, bodyClickFn );
           }
@@ -387,13 +422,15 @@
       buttons.forEach( function( el, i ) {
         var effect = el.getAttribute( 'data-effect' );
 
+
+
         // console.log(effect);
 
         el.addEventListener( eventtype, function( ev ) {
           ev.stopPropagation();
           ev.preventDefault();
           container.className = 'st-container'; // clear
-          classie.add( container, effect );
+          classie.add( container, "ficha" );
           setTimeout( function() {
             classie.add( container, 'st-menu-open' );
           }, 25 );
@@ -407,6 +444,8 @@
 
 
 })();
+
+// Smoothscroll via CSS Tricks.
 
 $(function() {
   $('a[href*=#]:not([href=#])').click(function() {

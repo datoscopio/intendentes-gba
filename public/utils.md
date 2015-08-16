@@ -45,7 +45,11 @@ https://pixelbeat.cartodb.com/tables/poligonos_gba/map
 topojson -o public/data/gba.json --bbox -p antes,cabecera,distrito,codigo,mandatos,frente_2011,frente_alianza,intendente,tiempocargo,votos_2011,pt2011,particularidades conourbano.geojson
 
 
-topojson -o gba.json --bbox -p distrito,intendente,cargo,compite,mandatos,tiempo,antes,pt2011,votos_2011,frentealianza_2015,frente_201 conurbano.geojson
+topojson -o gba.json --bbox -p distrito,intendente,cargo,compite,mandatos,tiempo,antes,pt2011,votos_2011,frentealianza_2015,frente_2011 conurbano.geojson
+
+/* Version Final, post PASO */
+
+topojson -o gba.json --bbox -p tiempo,cargo,compite,distrito,frente_2011,frente_alianza_2015,intendente,mandatos,ptp2015,pt2011,generales,antes,votos_2011,votos_p2015 conurbano.geojson
 
 
 http://bl.ocks.org/bycoffe/3230965

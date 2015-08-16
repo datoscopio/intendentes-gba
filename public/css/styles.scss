@@ -50,14 +50,14 @@ $tooltip-max-width:           520px !default;
 
 // Components
 @import "../components/bootstrap-sass/assets/stylesheets/bootstrap/component-animations";
-@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/dropdowns";
+// @import "../components/bootstrap-sass/assets/stylesheets/bootstrap/dropdowns";
 @import "../components/bootstrap-sass/assets/stylesheets/bootstrap/button-groups";
 @import "../components/bootstrap-sass/assets/stylesheets/bootstrap/input-groups";
 @import "../components/bootstrap-sass/assets/stylesheets/bootstrap/navs";
 @import "../components/bootstrap-sass/assets/stylesheets/bootstrap/navbar";
 @import "../components/bootstrap-sass/assets/stylesheets/bootstrap/badges";
 @import "../components/bootstrap-sass/assets/stylesheets/bootstrap/responsive-embed";
-@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/close";
+// @import "../components/bootstrap-sass/assets/stylesheets/bootstrap/close";
 
 // Components w/ JavaScript
 @import "../components/bootstrap-sass/assets/stylesheets/bootstrap/tooltip";
@@ -252,7 +252,6 @@ h4 {
   font-size: 1.1em;
   font-weight: 400;
   pointer-events: all;
-
 }
 .icon-arrow {
   width: 62px;
@@ -527,7 +526,8 @@ a {
 .place-label {
   pointer-events: none;
   text-anchor: middle;
-  font-size: 13px;
+  font-size: 0.8em;
+  text-rendering: optimizeSpeed;
   letter-spacing: -4;
 }
 
@@ -662,6 +662,14 @@ a {
     letter-spacing: 1px;
     margin-bottom: 20px;
 
+  }
+
+  h4 {
+  padding-top: 20px;
+  color: rgba(white,.5);
+  font-size: 1.1em;
+  font-weight: 400;
+  pointer-events: all;
   }
   // h1 {
 
