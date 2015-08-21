@@ -75,12 +75,11 @@
 
       ficha.append("span").attr("class", "ficha-intendente");
       ficha.append("span").attr("class", "ficha-distrito");
-      ficha.append("span").attr("class", "ficha-frente_alianza_2015");
+      ficha.append("span").attr("class", "ficha-frente_2011");
       ficha.append("span").attr("class", "ficha-tiempo");
       ficha.append("span").attr("class", "ficha-mandatos");
       ficha.append("span").attr("class", "ficha-antes");
       ficha.append("span").attr("class", "ficha-compite");
-      ficha.append("span").attr("class", "ficha-frente_2011");
       ficha.append("span").attr("class", "ficha-pt2011");
       ficha.append("span").attr("class", "ficha-frente_alianza_2015");
       ficha.append("span").attr("class", "ficha-ptp2015");
@@ -172,7 +171,7 @@
         .text(function(d) { return d.properties.distrito; })
         .call(wrap, 75)
         .style("fill-opacity", function(d) {
-              if (this.getComputedTextLength() > 60 && path.area(d) < 9000 ) {
+              if (this.getComputedTextLength() > 70 && path.area(d) < 9000 ) {
                 return 0;
               } else {
                 return 1;
@@ -350,16 +349,6 @@
   };
 
 
-
-  /*
-
-  "Municipio: <strong>"+d.properties.distrito+"</strong><br>"+
-  "Intendente: " +d.properties.intendente+"<br>"+
-  "Años en el cargo: " +d.properties.tiempo+"<br>"+
-  "Frente: " +d.properties.frente_2011+"<br>"+
-  "<strong>Click para más info</strong>"
-
-  */ 
   function clicked(d) {
 
     if (active.node() === this) return resetMap();
@@ -381,7 +370,7 @@
       .data(data)
     ficha.select('.ficha-intendente').html("Intendente: <strong>"+d.properties.intendente+"</strong>");
     ficha.select('.ficha-distrito').html("Municipio: <strong>"+d.properties.distrito+"</strong>");
-    ficha.select('.ficha-frente_alianza_2015').html("Frente - Alianza: <strong>"+d.properties.frente_alianza_2015+"</strong>");
+    ficha.select('.ficha-frente_2011').html("Frente - Alianza: <strong>"+d.properties.frente_2011+"</strong>");
     ficha.select('.ficha-tiempo').html("Años en el cargo: <strong>"+d.properties.tiempo+"</strong>");
     ficha.select('.ficha-mandatos').html("Mandatos: <strong>"+d.properties.mandatos+"</strong>");
     ficha.select('.ficha-antes').html("Sucedió a: <strong>"+d.properties.antes+"</strong>");
@@ -401,10 +390,7 @@
   function resetMap() {
     active.classed("active", false);
     active = d3.select(null);
-    /*
-    g.selectAll(".place-label")
-     .transition().duration(1000).style("font-size","0.8");
-    */
+    
     svg.transition()
         .duration(2000)
         .call(zoom.translate([0, 0]).scale(1).event);
@@ -413,6 +399,10 @@
   function zoomed(d) {
     g.style("stroke-width", 4 / d3.event.scale + "px");
     g.attr("transform", "translate(" + (d3.event.translate) + ")scale(" + (d3.event.scale) + ")");
+    // g.selectAll(".place-label").transition().duration(1000).style("font-size",1.5*d3.event.scale);
+    // g.selectAll(".place-label")
+    //   .transition().duration(1000)
+    //   .style("fill-opacity", 1);
     // if (active.node() && path.area(d) < 9000 ) {
     //   console.log("This is a large place!");
     // } else if (active.node() && path.area(d) < 2000) {
