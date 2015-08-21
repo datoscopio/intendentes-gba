@@ -3638,6 +3638,16 @@ body {
     #landing .content .icon-datoscopio {
       font-size: 5em;
       display: block; }
+    #landing .content ul {
+      padding: 0;
+      margin: 0; }
+    #landing .content li {
+      display: inline-block; }
+      #landing .content li a {
+        font-size: 1.5em; }
+        #landing .content li a:hover, #landing .content li a:focus, #landing .content li a:active {
+          text-decoration: none;
+          color: #b1b1b4; }
     #landing .content .flecha a {
       color: white;
       position: relative;
@@ -3694,7 +3704,7 @@ body {
     pointer-events: none; }
 
 h4 {
-  padding-top: 100px;
+  padding-top: 50px;
   color: rgba(255, 255, 255, 0.5);
   font-size: 1.1em;
   font-weight: 400;

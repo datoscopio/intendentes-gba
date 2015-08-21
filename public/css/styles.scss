@@ -178,6 +178,22 @@ body {
       font-size: 5em;
       display: block;
     }
+    ul {
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      display: inline-block;
+      a {
+        font-size: 1.5em;
+        &:hover, &:focus, &:active {
+          text-decoration: none;
+          color: lighten($dark-grey, 20);    
+        }
+      }
+      
+    }
+
     .flecha {
       a {
         color: white;
@@ -253,7 +269,7 @@ body {
 }
 
 h4 {
-  padding-top: 100px;
+  padding-top: 50px;
   color: rgba(white,.5);
   font-size: 1.1em;
   font-weight: 400;
