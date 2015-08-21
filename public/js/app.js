@@ -12,11 +12,21 @@
 
   var votoEscala = d3.scale.ordinal()
     .domain(["Menos de 50 mil", "Más 100 mil", "Más de 350 mil"])
-    .range(["#a5a3fb", "#7774f9", "#0000ff"]);
+    .range(["#e1cbf4", "#9768c1", "#662d91"]);
+
+  var votoEscalaPASO = d3.scale.ordinal()
+    .domain(["Menos de 50 mil", "Más 100 mil", "Más de 350 mil"])
+    .range(["#fed9de", "#fd8d9d", "#fc415b"]);
 
   var color = d3.scale.quantize()
-    // .domain([2,24])
     .range(["#d2d1fd", "#a5a3fb", "#7774f9", "#4a46f7", "#0000ff"]);
+
+  var votoColor2011 = d3.scale.quantize()
+    .range(["#e1cbf4", "#c2a4db", "#a47cc3", "#8555aa", "#662d91"]);
+
+
+  var votoColorPASO = d3.scale.quantize()
+    .range(["#fed9de", "#feb3bd", "#fd8d9d", "#fd677c", "#fc415b"]);
 
   var colorText = d3.scale.quantize()
     .range(["#00202a", "#2e343b", "#e4f1fe", "#e4f1fe", "#e4f1fe"]);
@@ -116,12 +126,7 @@
           .data(topojson.feature(gba, gba.objects.conurbano).features)
           .classed("hidden", false)
           .attr("style", "left:"+(mouse[0]+25)+"px;top:"+mouse[1]+"px")
-          .html(
-            "Municipio: <strong>"+d.properties.distrito+"</strong><br>"+
-            "Intendente: " +d.properties.intendente+"<br>"+
-            "Años en el cargo: " +d.properties.tiempo+"<br>"+
-            "Frente: " +d.properties.frente_2011+"<br>"+
-            "<strong>Click para más info</strong>");
+          .html(renderTooltip);
 
 
       })
@@ -129,14 +134,20 @@
         tooltip.classed("hidden", true);
       });
 
-
-
       g.append("path")
           .datum(topojson.mesh(gba, gba.objects.conurbano, function(a, b) { return a !== b; }))
           .attr("class", "bordes")
           .attr("d", path);
 
+      function renderTooltip(d){
+          var context = {
+            distrito: d.properties.distrito
+          }
+          console.log(context);
 
+          var template = Handlebars.compile( d3.select('#tooltip').html() );
+          return template(d);      
+        }
 
 
     g.selectAll(".place-label")
@@ -159,10 +170,11 @@
           return colorText(d.properties[referencia]);
         });
 
+    // Agrego leyendas via d3.legend();
 
     svg.append("g")
       .attr("class", "leyendaCargo")
-      .attr("transform", "translate("+(width-350)+"," + (height-75) + ")")
+      .attr("transform", "translate("+(50)+"," + (height-75) + ")")
       .attr("shape-rendering", "crispEdges")
       .append("text")
       .attr("class", "legendRefence")
@@ -180,7 +192,7 @@
     svg.append("g")
       .attr("class", "leyendaVotos")
       .style("display", "none")
-      .attr("transform", "translate("+(width-350)+"," + (height-75) + ")")
+      .attr("transform", "translate("+(50)+"," + (height-75) + ")")
       .attr("shape-rendering", "crispEdges")
       .append("text")
       .attr("class", "legendRefence")
@@ -196,48 +208,128 @@
     svg.select(".leyendaVotos")
       .call(leyendaVotos);
 
-    $('#menu [data-toggle="buttons"] .btn').click(function(){
+    svg.append("g")
+      .attr("class", "leyendaVotosPASO")
+      .style("display", "none")
+      .attr("transform", "translate("+(50)+"," + (height-75) + ")")
+      .attr("shape-rendering", "crispEdges")
+      .append("text")
+      .attr("class", "legendRefence")
+        .attr("dy", "-1.20em")
+        .text("Cantidad de votos PASO")
 
-        referencia = $(this).find('input').attr('id');
+    var leyendaVotosPASO = d3.legend.color()
+      .shapeWidth(110)
+      .cells([30000, 50000, 80000, 120000, 350000])
+      .orient('horizontal')
+      .scale(votoEscalaPASO);
+
+    svg.select(".leyendaVotosPASO")
+      .call(leyendaVotosPASO);
+
+    $('#menu label').click(function(){
+
+        var leyendaCargo = $("svg .leyendaCargo"),
+            leyendaVotos = $("svg .leyendaVotos"),
+            leyendaVotosPASO = $("svg .leyendaVotosPASO");
+
+        var referencia = $(this).find('input').attr('id');
+
+        console.log(leyendaCargo);
 
         if (referencia === "tiempo") {
-          svg.select(".leyendaVotos").style("display", "none");
-          svg.select(".leyendaCargo").style("display", "block");
+
+          leyendaCargo.show(1500);
+          leyendaVotos.hide("fast");
+          leyendaVotosPASO.hide("fast");
+
+          colorText.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
+          color.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
+
+          d3.selectAll(".distrito")
+              .transition()
+              .duration(1500)
+              .delay(function(d, i) { return i / data.length * 500; })
+              .style("fill", function (d) {
+                return color(d.properties[referencia]);
+              });
+
+          d3.selectAll(".place-label")
+            .transition()
+            .duration(1600)
+            .style("fill", function(d) {
+              return colorText(d.properties[referencia]);
+            });
         } else if (referencia === "votos_2011") {
-          svg.select(".leyendaVotos").style("display", "block");
-          svg.select(".leyendaCargo").style("display", "none");
+
+          leyendaCargo.hide("fast");
+          leyendaVotos.show(1500);
+          leyendaVotosPASO.hide("fast");
+
+          colorText.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
+          votoColor2011.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
+
+          d3.selectAll(".distrito")
+              .transition()
+              .duration(1500)
+              .delay(function(d, i) { return i / data.length * 500; })
+              .style("fill", function (d) {
+                return votoColor2011(d.properties[referencia]);
+              });
+
+          d3.selectAll(".place-label")
+            .transition()
+            .duration(1600)
+            .style("fill", function(d) {
+              return colorText(d.properties[referencia]);
+            });
+          
         } else if (referencia === "votos_p2015") {
-          console.log('Nueva version');
+
+          leyendaCargo.hide("fast");
+          leyendaVotos.hide("fast");
+          leyendaVotosPASO.show(1500);
+          
+          colorText.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
+          votoColorPASO.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
+
+          d3.selectAll(".distrito")
+              .transition()
+              .duration(1500)
+              .delay(function(d, i) { return i / data.length * 500; })
+              .style("fill", function (d) {
+                return votoColorPASO(d.properties[referencia]);
+              });
+
+          d3.selectAll(".place-label")
+            .transition()
+            .duration(1600)
+            .style("fill", function(d) {
+              return colorText(d.properties[referencia]);
+            });
+
         }
 
         resetMap();
 
 
 
-        colorText.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
-        color.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
-
-        d3.selectAll(".distrito")
-            .transition()
-            .duration(1500)
-            .delay(function(d, i) { return i / data.length * 500; })
-            .style("fill", function (d) {
-              console.table(d.properties[referencia]);
-              return color(d.properties[referencia]);
-            });
-
-        d3.selectAll(".place-label")
-          .transition()
-          .duration(1600)
-          .style("fill", function(d) {
-            return colorText(d.properties[referencia]);
-          });
+       
         
     });
   };
 
 
 
+  /*
+
+  "Municipio: <strong>"+d.properties.distrito+"</strong><br>"+
+  "Intendente: " +d.properties.intendente+"<br>"+
+  "Años en el cargo: " +d.properties.tiempo+"<br>"+
+  "Frente: " +d.properties.frente_2011+"<br>"+
+  "<strong>Click para más info</strong>"
+
+  */ 
   function clicked(d) {
 
     if (active.node() === this) return resetMap();
@@ -280,20 +372,20 @@ Situación frente a las elecciones de Octubre (Va o no acá dependiendo de lo qu
     ficha
       .data(data)
       .html(
-        "<h1><strong>Intendente</strong><br>" +d.properties.intendente+"</h1>"+
-        "<strong>Municipio</strong><br>"+d.properties.distrito+"<br>"+
-        "<strong>Frente - Alianza</strong><br>"+d.properties.frente_alianza_2015+"<br>"+
-        "<strong>Años en el cargo</strong><br>" +d.properties.tiempo+"<br>"+
-        "<strong>Mandatos</strong><br>" +d.properties.mandatos+"<br>"+
-        "<strong>Sucedió a</strong><br>" +d.properties.antes+"<br>"+
-        "<strong>Cargo por el que compite en 2015</strong><br>" +d.properties.compite+
+        "<h1><strong>Intendente</strong>: " +d.properties.intendente+"</h1>"+
+        "<strong>Municipio</strong>: "+d.properties.distrito+"<br>"+
+        "<strong>Frente - Alianza</strong>: "+d.properties.frente_alianza_2015+"<br>"+
+        "<strong>Años en el cargo</strong>: " +d.properties.tiempo+"<br>"+
+        "<strong>Mandatos</strong>: " +d.properties.mandatos+"<br>"+
+        "<strong>Sucedió a</strong>: " +d.properties.antes+"<br>"+
+        "<strong>Cargo por el que compite en 2015</strong>: " +d.properties.compite+
         "<h4>Elecciones 2011</h4>"+
-        "<strong>Frente 2011</strong><br>" +d.properties.frente_2011+"<br>"+
-        "<strong>Desempeño electoral</strong><br>" +d.properties.pt2011+"%<br>"+
+        "<strong>Frente 2011</strong>: " +d.properties.frente_2011+"<br>"+
+        "<strong>Desempeño electoral</strong>: " +d.properties.pt2011+"%<br>"+
         "<h4>Elecciones P.A.S.O. 2015</h4>"+
-        "<strong>Frente - Alianza 2015</strong><br>" +d.properties.frente_alianza_2015+"<br>"+
-        "<strong>Desempeño electoral</strong><br>" +d.properties.ptp2015+"%<br>"+
-        "<strong>Situación frente a las elecciones de Octubre</strong><br>" +d.properties.generales+
+        "<strong>Frente - Alianza 2015</strong>: " +d.properties.frente_alianza_2015+"<br>"+
+        "<strong>Desempeño electoral</strong>: " +d.properties.ptp2015+"%<br>"+
+        "<strong>Situación frente a las elecciones de Octubre</strong>: " +d.properties.generales+
         "<div class='nota'>Click en el mapa para cerrar.</div>");
     svg.transition()
         .duration(1500)

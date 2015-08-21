@@ -21,6 +21,8 @@ $font-family-sans-serif: $fontset-roboto-medium;
    ######## */
 
 
+$dark-grey:                   #7D7D82;
+
 
 /* ################
    Bootstrap Resets
@@ -38,7 +40,7 @@ $tooltip-max-width:           520px !default;
 
 // Reset and dependencies
 @import "../components/bootstrap-sass/assets/stylesheets/bootstrap/normalize";
-@import "../components/bootstrap-sass/assets/stylesheets/bootstrap/glyphicons";
+// @import "../components/bootstrap-sass/assets/stylesheets/bootstrap/glyphicons";
 
 // Core CSS
 @import "../components/bootstrap-sass/assets/stylesheets/bootstrap/scaffolding";
@@ -160,7 +162,8 @@ body {
   width: 100%;
   display: table;
   z-index: 10;
-  @include linear-gradient(50deg, #0b24fb 0%, #6d7cfd 100%);
+  background-color: $dark-grey;
+  // @include linear-gradient(50deg, #0b24fb 0%, #6d7cfd 100%);
   .content {
     display:table-cell;
     vertical-align: middle;
@@ -182,9 +185,10 @@ body {
         z-index: 10;
       }
       .icon-arrow {
+        font-size: 2em;
         position: relative;
         z-index: 10;
-        border: 1px solid rgba(white,0.5);
+        // border: 1px solid rgba(white,0.5);
       }
     }
   }
@@ -202,7 +206,7 @@ body {
     .titulo {
       margin: 0 auto;
       width: 500px;
-      color: #0b24fb;
+      color: #333333;
       position: relative;
       z-index: 10;
     }
@@ -218,14 +222,14 @@ body {
     }
     .flecha {
       a {
-        color: #0b24fb;
+        color: #333333;
         position: relative;
         z-index: 10;
       }
       .icon-arrow {
+        font-size: 2em;
         position: relative;
         z-index: 10;
-        border: 1px solid rgba(#0b24fb,0.5);
       }
     }
   }
@@ -240,7 +244,9 @@ body {
   z-index: 9;
   svg {
     .distrito {
-      fill: #ced3fe;
+      stroke: #CCCCCC;
+      stroke-width: 1;
+      fill: none;
       pointer-events: none;
     }
   }
@@ -440,10 +446,14 @@ a {
 #menu {
   display: block;
   position: absolute;
-  left: 50px;
-  bottom: 50px;
+  left: 70px;
+  top: 320px;
   @include opacity(1);
   transition: opacity 1s;
+  label {
+    cursor: pointer;
+    text-transform: uppercase;
+  }
 }
 
 .caption {
@@ -471,11 +481,12 @@ a {
     font-weight: 400;
     line-height: 1.5em;
     margin: 25px 0 0 50px;
-    span {
-      font-size: .8em;
-      line-height: 5em;
-      color: rgba(black,.6);
-    }
+  }
+  span {
+    font-size: .8em;
+    line-height: 5em;
+    color: rgba(black,.6);
+    margin: 25px 0 0 50px;
   }
 }
 
@@ -603,7 +614,7 @@ a {
   visibility: hidden;
   width: 350px;
   height: 100%;
-  background: #3C50FC;
+  background: $dark-grey;
   padding: 0 10px 15px 15px;
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
@@ -632,7 +643,8 @@ a {
 /* content style */
 
 .st-menu {
-
+  font-size: 0.95em;
+  line-height: 1.5em;
   h1 {
     font-family: $fontset-roboto-light;
     font-size: 1.2em !important;
@@ -665,9 +677,10 @@ a {
   }
 
   h4 {
-  padding-top: 20px;
+  padding-top: 10px;
   color: rgba(white,.5);
   font-size: 1.1em;
+  line-height: 1em;
   font-weight: 400;
   pointer-events: all;
   }
