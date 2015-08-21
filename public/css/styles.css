@@ -4082,6 +4082,9 @@ a {
 .ficha span {
   display: block; }
 
+.ficha .ficha-intendente {
+  margin-top: 25px; }
+
 /* Fallback example for browsers that don't support 3D transforms (and no JS fallback) */
 .no-csstransforms3d .st-pusher, .no-js .st-pusher {
   padding-left: 300px; }

@@ -64,27 +64,27 @@
   var tooltip = d3.select(".tooltip")
       .style("display", "none");
 
-      tooltip.append("span").attr("class", "municipio");
-      tooltip.append("span").attr("class", "intendente");
-      tooltip.append("span").attr("class", "tiempo");
-      tooltip.append("span").attr("class", "frente");
+      tooltip.append("span").attr("class", "tooltip-municipio");
+      tooltip.append("span").attr("class", "tooltip-intendente");
+      tooltip.append("span").attr("class", "tooltip-tiempo");
+      tooltip.append("span").attr("class", "tooltip-frente");
 
 
 
   var ficha = d3.select(".ficha");
 
-      ficha.append("span").attr("class", "intendente");
-      ficha.append("span").attr("class", "distrito");
-      ficha.append("span").attr("class", "frente_alianza_2015");
-      ficha.append("span").attr("class", "tiempo");
-      ficha.append("span").attr("class", "mandatos");
-      ficha.append("span").attr("class", "antes");
-      ficha.append("span").attr("class", "compite");
-      ficha.append("span").attr("class", "frente_2011");
-      ficha.append("span").attr("class", "pt2011");
-      ficha.append("span").attr("class", "frente_alianza_2015");
-      ficha.append("span").attr("class", "ptp2015");
-      ficha.append("span").attr("class", "generales");
+      ficha.append("span").attr("class", "ficha-intendente");
+      ficha.append("span").attr("class", "ficha-distrito");
+      ficha.append("span").attr("class", "ficha-frente_alianza_2015");
+      ficha.append("span").attr("class", "ficha-tiempo");
+      ficha.append("span").attr("class", "ficha-mandatos");
+      ficha.append("span").attr("class", "ficha-antes");
+      ficha.append("span").attr("class", "ficha-compite");
+      ficha.append("span").attr("class", "ficha-frente_2011");
+      ficha.append("span").attr("class", "ficha-pt2011");
+      ficha.append("span").attr("class", "ficha-frente_alianza_2015");
+      ficha.append("span").attr("class", "ficha-ptp2015");
+      ficha.append("span").attr("class", "ficha-generales");
 
   var conurbanoLinea = d3.select(".mapaConurbanoLinea").append("svg")
       .attr("width", width)
@@ -146,10 +146,10 @@
           .data(topojson.feature(gba, gba.objects.conurbano).features)
           .classed("hidden", false)
           .attr("style", "left:"+(mouse[0]+25)+"px;top:"+mouse[1]+"px");
-        tooltip.select('.municipio').html("Municipio: <strong>"+d.properties.distrito+"</strong>")
-        tooltip.select('.intendente').html("Intendente: <strong>"+d.properties.intendente+"</strong>")
-        tooltip.select('.tiempo').html("Años en el cargo: <strong>"+d.properties.tiempo+"</strong>")
-        tooltip.select('.frente').html("Frente: <strong>"+d.properties.frente_2011+"</strong><br><strong>Click para más info</strong>")
+        tooltip.select('.tooltip-municipio').html("Municipio: <strong>"+d.properties.distrito+"</strong>")
+        tooltip.select('.tooltip-intendente').html("Intendente: <strong>"+d.properties.intendente+"</strong>")
+        tooltip.select('.tooltip-tiempo').html("Años en el cargo: <strong>"+d.properties.tiempo+"</strong>")
+        tooltip.select('.tooltip-frente').html("Frente: <strong>"+d.properties.frente_2011+"</strong><br><strong>Click para más info</strong>")
       })
       .on("mouseout",  function(d,i) {
         tooltip.classed("hidden", true);
@@ -242,19 +242,30 @@
 
     $('#menu label').click(function(){
 
+
+        referencia = $(this).find('input').attr('id');
+
+
         var leyendaCargo = $("svg .leyendaCargo"),
             leyendaVotos = $("svg .leyendaVotos"),
-            leyendaVotosPASO = $("svg .leyendaVotosPASO");
+            leyendaVotosPASO = $("svg .leyendaVotosPASO"),
+            titulo = $(".title"),
+            contenido = $(".context");
 
-        var referencia = $(this).find('input').attr('id');
+        
 
-        console.log(leyendaCargo);
+       
 
         if (referencia === "tiempo") {
+
+           console.log("tiempo");
 
           leyendaCargo.show(1500);
           leyendaVotos.hide("fast");
           leyendaVotosPASO.hide("fast");
+
+          titulo.html("Mapa de los intendentes en el conurbano");
+          contenido.html("¿Quiénes son y cuánto tiempo hace que gobiernan?¿A qué espacio político pertenecen? Éstos son los 24 intendentes de los Partidos del GBA.");
 
           colorText.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
           color.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
@@ -279,6 +290,9 @@
           leyendaVotos.show(1500);
           leyendaVotosPASO.hide("fast");
 
+          titulo.html("¿Cómo les fue en el 2011?");
+          contenido.html("Éste es el mapa del desempeño electoral de cada uno de los intendentes en las elecciones de 2011.");
+
           colorText.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
           votoColor2011.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
 
@@ -302,6 +316,9 @@
           leyendaCargo.hide("fast");
           leyendaVotos.hide("fast");
           leyendaVotosPASO.show(1500);
+
+          titulo.html("¿Cómo les fue en 2015?");
+          contenido.html("En este mapa encontrás la cantidad de votos que obtuvieron los candidatos a las intendencias en las PASO 2015 y cómo se posicionan frente a las Elecciones Generales de octubre. ");
           
           colorText.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
           votoColorPASO.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
@@ -362,17 +379,18 @@
 
     ficha
       .data(data)
-    ficha.select('.intendente').html("Intendente: <strong>"+d.properties.intendente+"</strong>");
-    ficha.select('.distrito').html("Municipio: <strong>"+d.properties.distrito+"</strong>");
-    ficha.select('.frente_alianza_2015').html("Frente - Alianza: <strong>"+d.properties.frente_alianza_2015+"</strong>");
-    ficha.select('.tiempo').html("Años en el cargo: <strong>"+d.properties.tiempo+"</strong>");
-    ficha.select('.mandatos').html("Mandatos: <strong>"+d.properties.mandatos+"</strong>");
-    ficha.select('.antes').html("Sucedió a: <strong>"+d.properties.antes+"</strong>");
-    ficha.select('.compite').html("Cargo por el que compite en 2015: <strong>"+d.properties.compite+"</strong>");
-    ficha.select('.frente_2011').html("<h4>Elecciones 2011</h4>Frente 2011: <strong>"+d.properties.frente_2011+"</strong>");
-    ficha.select('.pt2011').html("Desempeño electoral: <strong>"+d.properties.pt2011+"%</strong><h4>Elecciones P.A.S.O. 2015</h4>");
-    ficha.select('.ptp2015').html("Desempeño electoral: <strong>"+d.properties.ptp2015+"%</strong>");
-    ficha.select('.generales').html("Situación frente a las elecciones de Octubre: <strong>"+d.properties.generales+"</strong><div class='nota'>Click en el mapa para cerrar.</div>");
+    ficha.select('.ficha-intendente').html("Intendente: <strong>"+d.properties.intendente+"</strong>");
+    ficha.select('.ficha-distrito').html("Municipio: <strong>"+d.properties.distrito+"</strong>");
+    ficha.select('.ficha-frente_alianza_2015').html("Frente - Alianza: <strong>"+d.properties.frente_alianza_2015+"</strong>");
+    ficha.select('.ficha-tiempo').html("Años en el cargo: <strong>"+d.properties.tiempo+"</strong>");
+    ficha.select('.ficha-mandatos').html("Mandatos: <strong>"+d.properties.mandatos+"</strong>");
+    ficha.select('.ficha-antes').html("Sucedió a: <strong>"+d.properties.antes+"</strong>");
+    ficha.select('.ficha-compite').html("Cargo por el que compite en 2015: <strong>"+d.properties.compite+"</strong>");
+    ficha.select('.ficha-frente_2011').html("<h4>Elecciones 2011</h4>Frente 2011: <strong>"+d.properties.frente_2011+"</strong>");
+    ficha.select('.ficha-pt2011').html("Desempeño electoral: <strong>"+d.properties.pt2011+"%</strong>");
+    ficha.select('.ficha-frente_alianza_2015').html("<h4>Elecciones P.A.S.O. 2015</h4>Frente - Alianza 2015: <strong>"+d.properties.frente_alianza_2015+"</strong>");
+    ficha.select('.ficha-ptp2015').html("Desempeño electoral: <strong>"+d.properties.ptp2015+"%</strong>");
+    ficha.select('.ficha-generales').html("Situación frente a las elecciones de Octubre: <strong>"+d.properties.generales+"</strong>");
 
     svg.transition()
         .duration(1500)
