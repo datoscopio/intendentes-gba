@@ -3,11 +3,12 @@
   var width = Math.max(960, window.innerWidth),
       height = Math.max(500, window.innerHeight),
       active = d3.select(null),
-      data;
+      data,
+      municipio;
 
 
   var cargoEscala = d3.scale.ordinal()
-    .domain(["Menos de 5", "Más 10", "Más de 20"])
+    .domain(["Menos de 5", "Más de 10", "Más de 20"])
     .range(["#a5a3fb", "#7774f9", "#0000ff"]);
 
   var votoEscala = d3.scale.ordinal()
@@ -119,6 +120,7 @@
 
     var referencia = "tiempo";
 
+
     colorText.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
     color.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
 
@@ -135,16 +137,20 @@
         .attr("class", "distrito")
         .attr("data-effect","ficha")
         .call(init)
-        .on("click", clicked)
+      .on("click", clicked)
         .style("fill", function(d) {
           return color(d.properties[referencia]);
+      })
+      .on("mouseover", function(d) {
+        municipio = normalize(d.properties.distrito);
+        d3.select('#'+municipio).transition().duration(500).style("fill-opacity", 1);
       })
       .on("mousemove", function(d,i) {
         var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
         tooltip
-          .data(topojson.feature(gba, gba.objects.conurbano).features)
+          .data(data)
           .classed("hidden", false)
-          .attr("style", "left:"+(mouse[0]+25)+"px;top:"+mouse[1]+"px");
+          .attr("style", "left:"+(mouse[0]+40)+"px;top:"+mouse[1]+"px");
         tooltip.select('.tooltip-municipio').html("Municipio: <strong>"+d.properties.distrito+"</strong>")
         tooltip.select('.tooltip-intendente').html("Intendente: <strong>"+d.properties.intendente+"</strong>")
         tooltip.select('.tooltip-tiempo').html("Años en el cargo: <strong>"+d.properties.tiempo+"</strong>")
@@ -152,6 +158,7 @@
       })
       .on("mouseout",  function(d,i) {
         tooltip.classed("hidden", true);
+        d3.select('#'+municipio).transition().duration(250).style("fill-opacity", 0);
       });
 
       g.append("path")
@@ -168,19 +175,26 @@
         .attr("class", "place-label")
         .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
         .attr("dy", "-.20em")
+        // .attr("class", function (d){
+        //   var distr = (d.properties.distrito).replace(/\s+/g, '').replace('.', '').toLowerCase();
+        //   return d3.select(this).attr("class") + " " +(normalize(distr));
+        // })
+        .attr("id", function (d) {
+            municipio = normalize(d.properties.distrito);
+            return municipio;
+        })
         .text(function(d) { return d.properties.distrito; })
         .call(wrap, 75)
-        .style("fill-opacity", function(d) {
-              if (this.getComputedTextLength() > 70 && path.area(d) < 9000 ) {
-                return 0;
-              } else {
-                return 1;
-              }
-        })
-
+        .style("fill-opacity", "0")
         .style("fill", function(d) {
           return colorText(d.properties[referencia]);
         });
+
+    // if (this.getComputedTextLength() > 70 && path.area(d) < 9000 ) {
+    //   return 0;
+    // } else {
+    //   return 1;
+    // }
 
     // Agrego leyendas via d3.legend();
 
@@ -548,3 +562,230 @@ $(function() {
     }
   });
 });
+
+// http://stackoverflow.com/a/16877175/1250044
+var normalize = (function () {
+    var map = {
+            "À": "A",
+            "Á": "A",
+            "Â": "A",
+            "Ã": "A",
+            "Ä": "A",
+            "Å": "A",
+            "Æ": "AE",
+            "Ç": "C",
+            "È": "E",
+            "É": "E",
+            "Ê": "E",
+            "Ë": "E",
+            "Ì": "I",
+            "Í": "I",
+            "Î": "I",
+            "Ï": "I",
+            "Ð": "D",
+            "Ñ": "N",
+            "Ò": "O",
+            "Ó": "O",
+            "Ô": "O",
+            "Õ": "O",
+            "Ö": "O",
+            "Ø": "O",
+            "Ù": "U",
+            "Ú": "U",
+            "Û": "U",
+            "Ü": "U",
+            "Ý": "Y",
+            "ß": "s",
+            "à": "a",
+            "á": "a",
+            "â": "a",
+            "ã": "a",
+            "ä": "a",
+            "å": "a",
+            "æ": "ae",
+            "ç": "c",
+            "è": "e",
+            "é": "e",
+            "ê": "e",
+            "ë": "e",
+            "ì": "i",
+            "í": "i",
+            "î": "i",
+            "ï": "i",
+            "ñ": "n",
+            "ò": "o",
+            "ó": "o",
+            "ô": "o",
+            "õ": "o",
+            "ö": "o",
+            "ø": "o",
+            "ù": "u",
+            "ú": "u",
+            "û": "u",
+            "ü": "u",
+            "ý": "y",
+            "ÿ": "y",
+            "Ā": "A",
+            "ā": "a",
+            "Ă": "A",
+            "ă": "a",
+            "Ą": "A",
+            "ą": "a",
+            "Ć": "C",
+            "ć": "c",
+            "Ĉ": "C",
+            "ĉ": "c",
+            "Ċ": "C",
+            "ċ": "c",
+            "Č": "C",
+            "č": "c",
+            "Ď": "D",
+            "ď": "d",
+            "Đ": "D",
+            "đ": "d",
+            "Ē": "E",
+            "ē": "e",
+            "Ĕ": "E",
+            "ĕ": "e",
+            "Ė": "E",
+            "ė": "e",
+            "Ę": "E",
+            "ę": "e",
+            "Ě": "E",
+            "ě": "e",
+            "Ĝ": "G",
+            "ĝ": "g",
+            "Ğ": "G",
+            "ğ": "g",
+            "Ġ": "G",
+            "ġ": "g",
+            "Ģ": "G",
+            "ģ": "g",
+            "Ĥ": "H",
+            "ĥ": "h",
+            "Ħ": "H",
+            "ħ": "h",
+            "Ĩ": "I",
+            "ĩ": "i",
+            "Ī": "I",
+            "ī": "i",
+            "Ĭ": "I",
+            "ĭ": "i",
+            "Į": "I",
+            "į": "i",
+            "İ": "I",
+            "ı": "i",
+            "Ĳ": "IJ",
+            "ĳ": "ij",
+            "Ĵ": "J",
+            "ĵ": "j",
+            "Ķ": "K",
+            "ķ": "k",
+            "Ĺ": "L",
+            "ĺ": "l",
+            "Ļ": "L",
+            "ļ": "l",
+            "Ľ": "L",
+            "ľ": "l",
+            "Ŀ": "L",
+            "ŀ": "l",
+            "Ł": "l",
+            "ł": "l",
+            "Ń": "N",
+            "ń": "n",
+            "Ņ": "N",
+            "ņ": "n",
+            "Ň": "N",
+            "ň": "n",
+            "ŉ": "n",
+            "Ō": "O",
+            "ō": "o",
+            "Ŏ": "O",
+            "ŏ": "o",
+            "Ő": "O",
+            "ő": "o",
+            "Œ": "OE",
+            "œ": "oe",
+            "Ŕ": "R",
+            "ŕ": "r",
+            "Ŗ": "R",
+            "ŗ": "r",
+            "Ř": "R",
+            "ř": "r",
+            "Ś": "S",
+            "ś": "s",
+            "Ŝ": "S",
+            "ŝ": "s",
+            "Ş": "S",
+            "ş": "s",
+            "Š": "S",
+            "š": "s",
+            "Ţ": "T",
+            "ţ": "t",
+            "Ť": "T",
+            "ť": "t",
+            "Ŧ": "T",
+            "ŧ": "t",
+            "Ũ": "U",
+            "ũ": "u",
+            "Ū": "U",
+            "ū": "u",
+            "Ŭ": "U",
+            "ŭ": "u",
+            "Ů": "U",
+            "ů": "u",
+            "Ű": "U",
+            "ű": "u",
+            "Ų": "U",
+            "ų": "u",
+            "Ŵ": "W",
+            "ŵ": "w",
+            "Ŷ": "Y",
+            "ŷ": "y",
+            "Ÿ": "Y",
+            "Ź": "Z",
+            "ź": "z",
+            "Ż": "Z",
+            "ż": "z",
+            "Ž": "Z",
+            "ž": "z",
+            "ſ": "s",
+            "ƒ": "f",
+            "Ơ": "O",
+            "ơ": "o",
+            "Ư": "U",
+            "ư": "u",
+            "Ǎ": "A",
+            "ǎ": "a",
+            "Ǐ": "I",
+            "ǐ": "i",
+            "Ǒ": "O",
+            "ǒ": "o",
+            "Ǔ": "U",
+            "ǔ": "u",
+            "Ǖ": "U",
+            "ǖ": "u",
+            "Ǘ": "U",
+            "ǘ": "u",
+            "Ǚ": "U",
+            "ǚ": "u",
+            "Ǜ": "U",
+            "ǜ": "u",
+            "Ǻ": "A",
+            "ǻ": "a",
+            "Ǽ": "AE",
+            "ǽ": "ae",
+            "Ǿ": "O",
+            "ǿ": "o",
+            ".": ""
+        },
+        nonWord = /\W/g,
+        mapping = function (c) {
+            return map[c] || c; 
+        };
+
+
+    return function (str) {
+        return str.replace(nonWord, mapping).replace(/\s+/g, '').replace('.', '').toLowerCase();
+    };
+}());
