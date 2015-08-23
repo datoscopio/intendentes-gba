@@ -507,6 +507,7 @@ a {
 }
 
 .ficha {
+  word-spacing: -3px;
   .nota {
     font-size: .8em;
     padding-top: 50px;
@@ -767,7 +768,7 @@ a {
   &.st-menu::after {
     display: none;
   }
-  span {
+  .ficha-intendente, .ficha-distrito, .ficha-frente_2011, .ficha-tiempo, .ficha-mandatos, .ficha-antes, .ficha-compite, .ficha-pt2011, .ficha-frente_alianza_2015, .ficha-ptp2015 {
     display: block;
   }
   .ficha-intendente {

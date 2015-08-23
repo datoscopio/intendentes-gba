@@ -12,7 +12,7 @@
     .range(["#a5a3fb", "#7774f9", "#0000ff"]);
 
   var votoEscala = d3.scale.ordinal()
-    .domain(["Menos de 50 mil", "Más 100 mil", "Más de 350 mil"])
+    .domain(["Menos de 50 mil", "Más de 100 mil", "Más de 350 mil"])
     .range(["#e1cbf4", "#9768c1", "#662d91"]);
 
   var votoEscalaPASO = d3.scale.ordinal()
@@ -242,7 +242,7 @@
       .append("text")
       .attr("class", "legendRefence")
         .attr("dy", "-1.20em")
-        .text("Cantidad de votos PASO")
+        .text("Cantidad de votos P.A.S.O. 2015")
 
     var leyendaVotosPASO = d3.legend.color()
       .shapeWidth(110)
@@ -278,7 +278,7 @@
           leyendaVotosPASO.hide("fast");
 
           titulo.html("Mapa de los intendentes en el conurbano");
-          contenido.html("¿Quiénes son y cuánto tiempo hace que gobiernan?¿A qué espacio político pertenecen? Éstos son los 24 intendentes de los Partidos del GBA.");
+          contenido.html("¿Quiénes son y cuánto tiempo hace que gobiernan?¿A qué espacio político pertenecen? Éstos son los 24 intendentes de los partidos del Gran Buenos Aires.");
 
           colorText.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
           color.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
@@ -331,7 +331,7 @@
           leyendaVotosPASO.show(1500);
 
           titulo.html("¿Cómo les fue en 2015?");
-          contenido.html("En este mapa encontrás la cantidad de votos que obtuvieron los candidatos a las intendencias en las PASO 2015 y cómo se posicionan frente a las Elecciones Generales de octubre. ");
+          contenido.html("En este mapa encontrás la cantidad de votos que obtuvieron los candidatos a las intendencias en las P.A.S.O. 2015 y cómo se posicionan frente a las Elecciones Generales de octubre. ");
           
           colorText.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
           votoColorPASO.domain([d3.min(data, function(d) { return d.properties[referencia]; }), d3.max(data, function(d) { return d.properties[referencia]; })]);
@@ -390,10 +390,17 @@
     ficha.select('.ficha-antes').html("Sucedió a: <strong>"+d.properties.antes+"</strong>");
     ficha.select('.ficha-compite').html("Cargo por el que compite en 2015: <strong>"+d.properties.compite+"</strong>");
     ficha.select('.ficha-frente_2011').html("<h4>Elecciones 2011</h4>Frente 2011: <strong>"+d.properties.frente_2011+"</strong>");
-    ficha.select('.ficha-pt2011').html("Desempeño electoral: <strong>"+d.properties.pt2011+"%</strong>");
+    ficha.select('.ficha-pt2011').html("Desempeño electoral: <strong>"+d.properties.pt2011+"%</strong>.");
     ficha.select('.ficha-frente_alianza_2015').html("<h4>Elecciones P.A.S.O. 2015</h4>Frente - Alianza 2015: <strong>"+d.properties.frente_alianza_2015+"</strong>");
-    ficha.select('.ficha-ptp2015').html("Desempeño electoral: <strong>"+d.properties.ptp2015+"%</strong>");
-    ficha.select('.ficha-generales').html("Situación frente a las elecciones de Octubre: <strong>"+d.properties.generales+"</strong>");
+    ficha.select('.ficha-ptp2015').html(function () {
+      if (d.properties.ptp2015.length == 0) {
+          console.log(d.properties.ptp2015);
+          return "Desempeño electoral: <strong>No reelige</strong>.";
+        } else {
+          return "Desempeño electoral: <strong>"+d.properties.ptp2015+"%</strong>.";
+        }
+      });
+    ficha.select('.ficha-generales').html("Situación frente a las elecciones de octubre: <strong>"+d.properties.generales+"</strong>");
 
     svg.transition()
         .duration(1500)
@@ -413,7 +420,7 @@
   function zoomed(d) {
     g.style("stroke-width", 4 / d3.event.scale + "px");
     g.attr("transform", "translate(" + (d3.event.translate) + ")scale(" + (d3.event.scale) + ")");
-    // g.selectAll(".place-label").transition().duration(1000).style("font-size",1.5*d3.event.scale);
+    // g.selectAll(".place-label").style("font-size",1.5*d3.event.scale);
     // g.selectAll(".place-label")
     //   .transition().duration(1000)
     //   .style("fill-opacity", 1);

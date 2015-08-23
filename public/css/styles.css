@@ -3880,9 +3880,11 @@ a {
     color: rgba(0, 0, 0, 0.6);
     margin: 25px 0 0 50px; }
 
-.ficha .nota {
-  font-size: .8em;
-  padding-top: 50px; }
+.ficha {
+  word-spacing: -3px; }
+  .ficha .nota {
+    font-size: .8em;
+    padding-top: 50px; }
 
 .distrito {
   cursor: pointer; }
@@ -4089,7 +4091,7 @@ a {
 .ficha.st-menu::after {
   display: none; }
 
-.ficha span {
+.ficha .ficha-intendente, .ficha .ficha-distrito, .ficha .ficha-frente_2011, .ficha .ficha-tiempo, .ficha .ficha-mandatos, .ficha .ficha-antes, .ficha .ficha-compite, .ficha .ficha-pt2011, .ficha .ficha-frente_alianza_2015, .ficha .ficha-ptp2015 {
   display: block; }
 
 .ficha .ficha-intendente {
